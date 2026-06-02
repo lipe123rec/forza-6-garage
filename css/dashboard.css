@@ -1,0 +1,315 @@
+/* dashboard.css - Specific styling for dashboard/garage grid and filters */
+
+.dashboard-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.dashboard-title-area {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Filtros */
+.filters-bar {
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-top: 2px solid rgba(179,211,53,0.4);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.filters-label {
+  font-family: var(--cond);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.filters-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 180px;
+  min-width: 140px;
+}
+
+.filter-group label {
+  font-family: var(--cond);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+
+.filters-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(179, 211, 53, 0.08);
+  padding-top: 12px;
+}
+
+.filter-count {
+  font-family: var(--cond);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.filter-count span {
+  color: var(--cyan);
+}
+
+/* Grid de cards */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* Card de carro na garagem */
+.car-card {
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--border2);
+  border-top: 3px solid var(--green);
+  padding: 24px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.15s, transform 0.2s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.car-card:hover {
+  border-color: var(--green);
+  background: rgba(179, 211, 53, 0.04);
+  transform: translateY(-2px);
+}
+
+/* Cores de acento diferentes por tipo */
+.car-card.shared {
+  border-top-color: var(--green);
+}
+.car-card.clone {
+  border-top-color: var(--yellow);
+}
+.car-card.own {
+  border-top-color: var(--cyan);
+}
+
+/* Nome e Informações */
+.car-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.car-card-name {
+  font-family: var(--cond);
+  font-weight: 900;
+  font-size: 1.25rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1.15;
+  margin-bottom: 2px;
+}
+
+.car-card-brand {
+  font-family: var(--cond);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.car-card-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  background: rgba(10, 12, 8, 0.4);
+  padding: 10px;
+  border: 1px solid rgba(179, 211, 53, 0.05);
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.spec-label {
+  font-family: var(--cond);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.spec-value {
+  font-family: var(--cond);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.spec-value span {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+/* Classe e Performance Index */
+.car-card-class-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(179, 211, 53, 0.05);
+  padding-top: 12px;
+}
+
+.car-card-class {
+  font-family: var(--cond);
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: var(--green);
+  text-transform: uppercase;
+}
+
+.car-card-class.class-x  { color: #ff00ea; }
+.car-card-class.class-s2 { color: #f63c3c; }
+.car-card-class.class-s1 { color: #ff8a00; }
+.car-card-class.class-a  { color: #00d4e8; }
+.car-card-class.class-b  { color: #e8c535; }
+.car-card-class.class-c  { color: #2ecc71; }
+.car-card-class.class-d  { color: #95a5a6; }
+
+.car-card-owner {
+  font-family: var(--cond);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.car-card-owner span {
+  color: var(--cyan);
+}
+
+/* Badge inline no header */
+.car-card .badge {
+  position: static;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+/* Animações e Delays */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.car-card {
+  animation: fadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.car-card:nth-child(1)  { animation-delay: 0.00s; }
+.car-card:nth-child(2)  { animation-delay: 0.04s; }
+.car-card:nth-child(3)  { animation-delay: 0.08s; }
+.car-card:nth-child(4)  { animation-delay: 0.12s; }
+.car-card:nth-child(5)  { animation-delay: 0.16s; }
+.car-card:nth-child(n+6){ animation-delay: 0.20s; }
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .dashboard-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filters-grid {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .filter-group {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Duplicate button inside car cards */
+.car-card-duplicate-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--muted);
+  font-family: var(--cond);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.car-card-duplicate-btn:hover {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #0c0f0a;
+  box-shadow: 0 0 12px rgba(0, 212, 232, 0.5);
+  transform: scale(1.05);
+}
+
+.car-card-duplicate-btn:active {
+  transform: scale(0.95);
+}
+
+.car-card-duplicate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  box-shadow: none;
+}
+

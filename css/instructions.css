@@ -1,0 +1,134 @@
+/* instructions.css - Premium layout styling for help and instructions page */
+
+.instructions-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.back-btn-container {
+  margin-bottom: 24px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--cond);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-decoration: none;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.back-btn:hover {
+  color: var(--green);
+  transform: translateX(-4px);
+}
+
+.instructions-panel {
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--border2);
+  border-top: 3px solid var(--green);
+  padding: 40px;
+  border-radius: 4px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.instructions-header {
+  border-bottom: 1px solid rgba(179, 211, 53, 0.15);
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+}
+
+.instructions-header h2 {
+  font-family: var(--cond);
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.instructions-intro {
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.instructions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-box {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(179, 211, 53, 0.08);
+  padding: 24px;
+  border-radius: 4px;
+  transition: transform 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.section-box:hover {
+  transform: translateY(-2px);
+  border-color: rgba(179, 211, 53, 0.25);
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.section-box h3 {
+  font-family: var(--cond);
+  color: var(--green);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-box h3 .icon {
+  font-size: 1.4rem;
+}
+
+.section-box p {
+  font-family: var(--body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.section-box p strong {
+  color: var(--cyan);
+}
+
+.section-box.notice-box {
+  border-left: 4px solid var(--yellow);
+  background: rgba(232, 197, 53, 0.04);
+}
+
+.section-box.notice-box:hover {
+  border-left-color: var(--yellow);
+  background: rgba(232, 197, 53, 0.06);
+}
+
+.section-box.notice-box h3 {
+  color: var(--yellow);
+}
+
+@media (max-width: 768px) {
+  .instructions-panel {
+    padding: 24px 16px;
+  }
+  .instructions-header h2 {
+    font-size: 1.8rem;
+  }
+}

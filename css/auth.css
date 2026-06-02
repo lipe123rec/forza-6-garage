@@ -1,0 +1,205 @@
+/* auth.css - Specific styling for login and register page */
+
+.auth-wrapper {
+  min-height: calc(100vh - 180px); /* height adjusting for header & footer */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 440px;
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--border2);
+  border-top: 3px solid var(--green);
+  padding: 30px;
+  animation: authFadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes authFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tabs */
+.auth-tabs {
+  display: flex;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+  gap: 10px;
+}
+
+.auth-tab {
+  flex: 1;
+  text-align: center;
+  font-family: var(--cond);
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 14px 6px;
+  min-height: 44px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  border-bottom: 2px solid transparent;
+  user-select: none;
+}
+
+.auth-tab:hover {
+  color: var(--text);
+}
+
+.auth-tab.active {
+  color: var(--green);
+  border-bottom-color: var(--green);
+}
+
+/* Forms */
+.auth-form {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-form.active {
+  display: flex;
+}
+
+.auth-action-btn {
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Supabase Credentials Config Area */
+.config-banner {
+  background: rgba(232, 197, 53, 0.08);
+  border: 1px solid rgba(232, 197, 53, 0.25);
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: authFadeUp 0.3s ease;
+}
+
+.config-banner-title {
+  font-family: var(--cond);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+
+.config-banner-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+.config-banner-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.config-banner-btn {
+  background: var(--yellow);
+  color: #0d0f0a;
+  border: none;
+  font-family: var(--cond);
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: filter 0.15s;
+}
+
+.config-banner-btn:hover {
+  filter: brightness(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 20px;
+  }
+  .auth-tabs {
+    margin-bottom: 20px;
+  }
+}
+
+/* Modais de Recuperação / Nova Senha */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 7, 4, 0.85);
+  backdrop-filter: blur(16px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  background: var(--panel2);
+  border: 2px solid var(--border2);
+  border-radius: 4px;
+  width: 100%;
+  max-width: 440px;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.open .modal {
+  transform: translateY(0);
+}
+
+.modal-title {
+  font-family: var(--cond);
+  font-weight: 900;
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--green);
+  padding-bottom: 12px;
+  color: var(--text);
+}
+
+.modal-title em {
+  font-style: normal;
+  color: var(--pink);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 28px;
+}

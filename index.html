@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forza Garage — Entrar / Cadastrar</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-tag">FORZA</span>
+        <h1><a href="dashboard.html" style="color: inherit; text-decoration: none;">FH6 <em>Garage</em></a></h1>
+      </div>
+      <div class="header-user" style="display: flex; align-items: center; gap: 16px;">
+        <div class="lang-toggle">
+          <button class="lang-btn" data-lang="en">EN</button>
+          <span style="color: var(--muted);">/</span>
+          <button class="lang-btn" data-lang="pt">PT</button>
+        </div>
+        <span class="badge live">Offline</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="auth-wrapper">
+      <div class="auth-container">
+        
+        <!-- Supabase Configuration Banner (Shown only if not initialized) -->
+        <div id="configBanner" class="config-banner" style="display: none;">
+          <div class="config-banner-title">⚙️ CONFIGURAÇÃO DO SUPABASE</div>
+          <div class="config-banner-desc">
+            Insira suas chaves do Supabase para inicializar o aplicativo. Seus dados serão salvos localmente no navegador.
+          </div>
+          <div class="config-banner-inputs">
+            <div class="field-group">
+              <label class="field-label">Supabase URL</label>
+              <input type="text" id="configUrl" class="field-input" placeholder="https://xxxx.supabase.co">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Supabase Anon Key</label>
+              <input type="text" id="configKey" class="field-input" placeholder="eyJhbGciOiJIUzI1Ni...">
+            </div>
+          </div>
+          <button id="btnSaveConfig" class="config-banner-btn">Salvar e Recarregar</button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="auth-tabs">
+          <div class="auth-tab active" data-tab="login" data-i18n="auth.login">Entrar</div>
+          <div class="auth-tab" data-tab="register" data-i18n="auth.register">Cadastrar</div>
+        </div>
+
+        <!-- Status global feedback -->
+        <div id="globalStatus" class="status-text" style="margin-bottom: 16px;"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form active" novalidate>
+          <div class="field-group">
+            <label for="loginEmail" class="field-label" data-i18n="auth.email">Email</label>
+            <input type="email" id="loginEmail" class="field-input" placeholder="exemplo@email.com" required>
+            <div id="loginEmailErr" class="field-error"></div>
+          </div>
+
+          <div class="field-group">
+            <label for="loginPassword" class="field-label" data-i18n="auth.password">Senha</label>
+            <input type="password" id="loginPassword" class="field-input" placeholder="Sua senha" required>
+            <div id="loginPasswordErr" class="field-error"></div>
+            <div style="text-align: right; margin-top: 6px;">
+              <a href="#" id="btnForgotPassword" data-i18n="auth.forgot_password" style="font-size: 0.75rem; color: var(--cyan); text-decoration: underline; font-family: var(--cond); letter-spacing: 0.05em; text-transform: uppercase;">Esqueci minha senha</a>
+            </div>
+          </div>
+
+          <button type="submit" id="btnLoginSubmit" class="btn auth-action-btn" data-i18n="auth.enter_garage">Entrar na Garagem</button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" class="auth-form" novalidate>
+          <div class="field-group">
+            <label for="registerEmail" class="field-label" data-i18n="auth.email">Email</label>
+            <input type="email" id="registerEmail" class="field-input" placeholder="exemplo@email.com" required>
+            <div id="registerEmailErr" class="field-error"></div>
+          </div>
+
+          <div class="field-group">
+            <label for="registerPassword" class="field-label" data-i18n="auth.password">Senha</label>
+            <input type="password" id="registerPassword" class="field-input" placeholder="Mínimo de 6 caracteres" required>
+            <div id="registerPasswordErr" class="field-error"></div>
+          </div>
+
+          <div class="field-group">
+            <label for="registerGamertag" class="field-label" data-i18n="auth.gamertag">Gamertag</label>
+            <input type="text" id="registerGamertag" class="field-input" placeholder="Ex: ForzaKing99" required>
+            <div id="registerGamertagErr" class="field-error"></div>
+          </div>
+
+          <div class="field-group">
+            <label for="registerUsername" class="field-label">Nome de Exibição (Opcional)</label>
+            <input type="text" id="registerUsername" class="field-input" placeholder="Ex: Lucas">
+            <div id="registerUsernameErr" class="field-error"></div>
+          </div>
+
+          <div class="field-group">
+            <label for="registerLang" class="field-label" data-i18n="auth.lang_label">Idioma Preferido</label>
+            <select id="registerLang" class="field-select">
+              <option value="en">English</option>
+              <option value="pt">Português</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="registerInviteCode" class="field-label" data-i18n="auth.invite_code">Código de Convite</label>
+            <input type="text" id="registerInviteCode" class="field-input" placeholder="FH6-XXXXX-XXXX" required>
+            <div id="registerInviteCodeErr" class="field-error"></div>
+          </div>
+
+          <button type="submit" id="btnRegisterSubmit" class="btn auth-action-btn" data-i18n="auth.register">Criar Conta</button>
+        </form>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <span data-i18n="common.footer">FORZA HORIZON 6 GARAGE &copy; 2026. DESENVOLVIDO PARA PILOTOS.</span>
+    &nbsp;&bull;&nbsp;
+    <a href="instructions.html" data-i18n="instructions.title" style="color: var(--cyan); text-decoration: none;">Instruções</a>
+  </footer>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgotPasswordModal" class="modal-overlay">
+    <div class="modal">
+      <h3 class="modal-title" data-i18n="auth.forgot_password_title">Recuperar Senha</h3>
+      <div id="forgotStatus" class="status-text" style="margin-bottom: 16px;"></div>
+      <form id="forgotForm" novalidate>
+        <div class="field-group">
+          <label for="forgotEmail" class="field-label" data-i18n="auth.email">Email</label>
+          <input type="email" id="forgotEmail" class="field-input" placeholder="exemplo@email.com" required>
+          <div id="forgotEmailErr" class="field-error"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="btnCancelForgot" class="btn-clear" data-i18n="common.cancel">Cancelar</button>
+          <button type="submit" id="btnForgotSubmit" class="btn" data-i18n="common.save">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Update Password Modal (Password Recovery Callback) -->
+  <div id="updatePasswordModal" class="modal-overlay">
+    <div class="modal">
+      <h3 class="modal-title" data-i18n="auth.reset_password_title">Definir Nova Senha</h3>
+      <div id="updateStatus" class="status-text" style="margin-bottom: 16px;"></div>
+      <form id="updateForm" novalidate>
+        <div class="field-group">
+          <label for="updatePassword" class="field-label" data-i18n="auth.password">Nova Senha</label>
+          <input type="password" id="updatePassword" class="field-input" placeholder="Mínimo de 6 caracteres" required>
+          <div id="updatePasswordErr" class="field-error"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" id="btnUpdateSubmit" class="btn" data-i18n="common.save">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Script Modules -->
+  <script type="module">
+    import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase.js';
+    import { getCurrentUser, login, register } from './js/auth.js';
+    import { getLang, setLang, applyTranslations, t } from './js/i18n.js';
+
+    // Initialize i18n toggles
+    const currentLang = getLang();
+    const registerLangEl = document.getElementById('registerLang');
+    if (registerLangEl) {
+      registerLangEl.value = currentLang;
+      registerLangEl.addEventListener('change', () => {
+        setLang(registerLangEl.value);
+        document.querySelectorAll('.lang-btn').forEach(b =>
+          b.classList.toggle('active', b.dataset.lang === registerLangEl.value)
+        );
+      });
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === currentLang);
+      btn.addEventListener('click', () => {
+        setLang(btn.dataset.lang);
+        document.querySelectorAll('.lang-btn').forEach(b =>
+          b.classList.toggle('active', b.dataset.lang === btn.dataset.lang)
+        );
+        if (registerLangEl) {
+          registerLangEl.value = btn.dataset.lang;
+        }
+      });
+    });
+    applyTranslations();
+
+    // 1. Check if Supabase needs configuration
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      document.getElementById('configBanner').style.display = 'flex';
+      
+      // Populate fields if they exist in localStorage (but key was invalid/corrupt)
+      document.getElementById('configUrl').value = localStorage.getItem('SUPABASE_URL') || '';
+      document.getElementById('configKey').value = localStorage.getItem('SUPABASE_ANON_KEY') || '';
+      
+      document.getElementById('btnSaveConfig').addEventListener('click', () => {
+        const url = document.getElementById('configUrl').value.trim();
+        const key = document.getElementById('configKey').value.trim();
+        if (url && key) {
+          localStorage.setItem('SUPABASE_URL', url);
+          localStorage.setItem('SUPABASE_ANON_KEY', key);
+          window.location.reload();
+        } else {
+          alert('Por favor, preencha ambos os campos.');
+        }
+      });
+      
+      // Disable auth buttons
+      document.getElementById('btnLoginSubmit').disabled = true;
+      document.getElementById('btnRegisterSubmit').disabled = true;
+    } else {
+      // Supabase is initialized. Update header status badge.
+      const statusBadge = document.querySelector('.header-user .badge');
+      statusBadge.classList.add('live');
+      statusBadge.textContent = 'ONLINE';
+
+      // 2. Redirect to dashboard if already logged in (but NOT if we are in a password recovery/reset flow)
+      const isRecoveryFlow = window.location.hash.includes('type=recovery') || 
+                             window.location.hash.includes('error_code=') || 
+                             window.location.hash.includes('access_token=');
+      if (!isRecoveryFlow) {
+        getCurrentUser().then(user => {
+          if (user) {
+            window.location.href = 'dashboard.html';
+          }
+        });
+      }
+    }
+
+    // --- Tab Switching ---
+    const tabs = document.querySelectorAll('.auth-tab');
+    const forms = document.querySelectorAll('.auth-form');
+    const globalStatus = document.getElementById('globalStatus');
+
+    // --- Detect URL Hash Errors (e.g. Expired Recovery Links) ---
+    const hash = window.location.hash;
+    if (hash) {
+      const params = new URLSearchParams(hash.replace('#', '?'));
+      const error = params.get('error');
+      const errorCode = params.get('error_code');
+      const errorDescription = params.get('error_description');
+
+      if (error || errorCode === 'otp_expired') {
+        globalStatus.setAttribute('data-i18n', 'auth.messages.link_expired');
+        globalStatus.className = 'status-text error';
+        applyTranslations(); // Aplica a tradução imediatamente
+        
+        // Limpa o hash para evitar reexibir ao recarregar a página
+        window.history.replaceState(null, null, window.location.pathname);
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        forms.forEach(f => f.classList.remove('active'));
+        globalStatus.textContent = '';
+        globalStatus.className = 'status-text';
+        globalStatus.removeAttribute('data-i18n');
+
+        tab.classList.add('active');
+        const formId = tab.dataset.tab === 'login' ? 'loginForm' : 'registerForm';
+        document.getElementById(formId).classList.add('active');
+      });
+    });
+
+    // --- Inline Gamertag Format Validation ---
+    const gamertagInput = document.getElementById('registerGamertag');
+    const gamertagErr = document.getElementById('registerGamertagErr');
+    const gamertagRegex = /^[a-zA-Z0-9_#-]+( [a-zA-Z0-9_#-]+)*$/;
+
+    gamertagInput.addEventListener('input', () => {
+      const val = gamertagInput.value.trim();
+      if (!val) {
+        gamertagErr.textContent = '';
+      } else if (val.length < 3 || val.length > 20) {
+        gamertagErr.textContent = 'Use de 3 a 20 caracteres (letras, números, _, # ou -).'
+      } else if (!gamertagRegex.test(val)) {
+        gamertagErr.textContent = 'Gamertag inválida. Espaços simples são permitidos, mas não no início/fim.';
+      } else {
+        gamertagErr.textContent = '';
+      }
+    });
+
+    // --- Handle Login Submit ---
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Reset errors
+      document.getElementById('loginEmailErr').textContent = '';
+      document.getElementById('loginPasswordErr').textContent = '';
+      globalStatus.textContent = '';
+      globalStatus.className = 'status-text';
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      let hasError = false;
+      if (!email) {
+        document.getElementById('loginEmailErr').textContent = 'O email é obrigatório.';
+        hasError = true;
+      }
+      if (!password) {
+        document.getElementById('loginPasswordErr').textContent = 'A senha é obrigatória.';
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      try {
+        globalStatus.textContent = 'Entrando...';
+        globalStatus.className = 'status-text';
+        
+        await login(email, password);
+        
+        globalStatus.textContent = 'Sucesso! Redirecionando...';
+        globalStatus.className = 'status-text success';
+        
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 800);
+      } catch (err) {
+        globalStatus.textContent = err.message || 'Erro ao autenticar. Verifique suas credenciais.';
+        globalStatus.className = 'status-text error';
+      }
+    });
+
+    // --- Handle Register Submit ---
+    const registerForm = document.getElementById('registerForm');
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Reset errors
+      document.getElementById('registerEmailErr').textContent = '';
+      document.getElementById('registerPasswordErr').textContent = '';
+      document.getElementById('registerGamertagErr').textContent = '';
+      document.getElementById('registerInviteCodeErr').textContent = '';
+      globalStatus.textContent = '';
+      globalStatus.className = 'status-text';
+
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const gamertag = document.getElementById('registerGamertag').value.trim();
+      const username = document.getElementById('registerUsername').value.trim();
+      const preferredLanguage = document.getElementById('registerLang').value;
+      const inviteCode = document.getElementById('registerInviteCode').value.trim();
+
+      let hasError = false;
+      if (!email) {
+        document.getElementById('registerEmailErr').textContent = 'O email é obrigatório.';
+        hasError = true;
+      }
+      if (!password) {
+        document.getElementById('registerPasswordErr').textContent = 'A senha é obrigatória.';
+        hasError = true;
+      } else if (password.length < 6) {
+        document.getElementById('registerPasswordErr').textContent = 'A senha deve ter pelo menos 6 caracteres.';
+        hasError = true;
+      }
+      if (!gamertag) {
+        document.getElementById('registerGamertagErr').textContent = 'A Gamertag é obrigatória.';
+        hasError = true;
+      } else if (!gamertagRegex.test(gamertag)) {
+        document.getElementById('registerGamertagErr').textContent = 'Formato de Gamertag inválido.';
+        hasError = true;
+      }
+      if (!inviteCode) {
+        document.getElementById('registerInviteCodeErr').textContent = 'O código de convite é obrigatório.';
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      try {
+        globalStatus.textContent = 'Criando conta...';
+        globalStatus.className = 'status-text';
+
+        await register(email, password, gamertag, inviteCode, username, preferredLanguage);
+
+        globalStatus.textContent = 'Cadastro realizado com sucesso! Redirecionando...';
+        globalStatus.className = 'status-text success';
+
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1200);
+      } catch (err) {
+        globalStatus.textContent = err.message || 'Erro ao realizar cadastro.';
+        globalStatus.className = 'status-text error';
+      }
+    });
+
+    // --- Forgot Password Flow ---
+    const forgotModal = document.getElementById('forgotPasswordModal');
+    const forgotForm = document.getElementById('forgotForm');
+    const forgotStatus = document.getElementById('forgotStatus');
+    const forgotEmailInput = document.getElementById('forgotEmail');
+    const forgotEmailErr = document.getElementById('forgotEmailErr');
+
+    document.getElementById('btnForgotPassword').addEventListener('click', (e) => {
+      e.preventDefault();
+      forgotEmailInput.value = '';
+      forgotEmailErr.textContent = '';
+      forgotStatus.textContent = '';
+      forgotStatus.className = 'status-text';
+      forgotModal.classList.add('open');
+    });
+
+    document.getElementById('btnCancelForgot').addEventListener('click', () => {
+      forgotModal.classList.remove('open');
+    });
+
+    forgotModal.addEventListener('click', (e) => {
+      if (e.target === forgotModal) {
+        forgotModal.classList.remove('open');
+      }
+    });
+
+    forgotForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      forgotEmailErr.textContent = '';
+      forgotStatus.textContent = '';
+      forgotStatus.className = 'status-text';
+
+      const email = forgotEmailInput.value.trim();
+      if (!email) {
+        forgotEmailErr.textContent = t('auth.messages.invalid_email') || 'Por favor, insira um e-mail válido.';
+        return;
+      }
+
+      try {
+        forgotStatus.textContent = t('common.loading') || 'Enviando...';
+        forgotStatus.className = 'status-text info';
+
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + window.location.pathname
+        });
+
+        if (error) throw error;
+
+        forgotStatus.textContent = t('auth.messages.forgot_success');
+        forgotStatus.className = 'status-text success';
+
+        setTimeout(() => {
+          forgotModal.classList.remove('open');
+        }, 3000);
+      } catch (err) {
+        forgotStatus.textContent = (t('auth.messages.forgot_error') || 'Erro ao solicitar recuperação: ') + err.message;
+        forgotStatus.className = 'status-text error';
+      }
+    });
+
+    // --- Update Password Flow (Recovery Callback) ---
+    const updateModal = document.getElementById('updatePasswordModal');
+    const updateForm = document.getElementById('updateForm');
+    const updateStatus = document.getElementById('updateStatus');
+    const updatePasswordInput = document.getElementById('updatePassword');
+    const updatePasswordErr = document.getElementById('updatePasswordErr');
+
+    // Escutar eventos de auth do Supabase para detectar PASSWORD_RECOVERY
+    if (supabase) {
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+          updatePasswordInput.value = '';
+          updatePasswordErr.textContent = '';
+          updateStatus.textContent = '';
+          updateStatus.className = 'status-text';
+          updateModal.classList.add('open');
+        }
+      });
+    }
+
+    updateForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      updatePasswordErr.textContent = '';
+      updateStatus.textContent = '';
+      updateStatus.className = 'status-text';
+
+      const password = updatePasswordInput.value;
+      if (!password) {
+        updatePasswordErr.textContent = (t('auth.password') || 'Senha') + ' é obrigatória.';
+        return;
+      }
+      if (password.length < 6) {
+        updatePasswordErr.textContent = t('auth.messages.password_min') || 'A senha deve ter pelo menos 6 caracteres.';
+        return;
+      }
+
+      try {
+        updateStatus.textContent = t('common.loading') || 'Salvando...';
+        updateStatus.className = 'status-text info';
+
+        const { error } = await supabase.auth.updateUser({ password });
+        if (error) throw error;
+
+        updateStatus.textContent = t('auth.messages.reset_success');
+        updateStatus.className = 'status-text success';
+
+        setTimeout(() => {
+          updateModal.classList.remove('open');
+          window.location.href = 'dashboard.html';
+        }, 1500);
+      } catch (err) {
+        updateStatus.textContent = (t('auth.messages.reset_error') || 'Erro ao redefinir senha: ') + err.message;
+        updateStatus.className = 'status-text error';
+      }
+    });
+  </script>
+</body>
+</html>

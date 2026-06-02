@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forza Garage — Configurar Build</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/car-form.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-tag">FORZA</span>
+        <h1><a href="dashboard.html" style="color: inherit; text-decoration: none;">FH6 <em>Garage</em></a></h1>
+      </div>
+      <div class="header-user" style="display: flex; align-items: center; gap: 16px;">
+        <div class="lang-toggle">
+          <button class="lang-btn" data-lang="en">EN</button>
+          <span style="color: var(--muted);">/</span>
+          <button class="lang-btn" data-lang="pt">PT</button>
+        </div>
+        <div class="unit-toggle-header">
+          <span data-i18n="units.toggle_label">Units:</span>
+          <select id="headerUnitSystem" class="unit-system-select">
+            <option value="mixed" data-i18n="units.mixed">Forza Style</option>
+            <option value="metric" data-i18n="units.metric">Metric</option>
+            <option value="imperial" data-i18n="units.imperial">Imperial</option>
+            <option value="custom" data-i18n="units.custom">Custom</option>
+          </select>
+        </div>
+        <span id="userGamertag" class="header-gamertag">GAMERTAG: <span>...</span></span>
+        <button id="btnLogout" class="btn-clear" data-i18n="auth.logout">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+
+    <!-- Form Header -->
+    <div class="form-header-area">
+      <a href="dashboard.html" class="btn-back" data-i18n="car.back_to_garage">← Back to Garage</a>
+      <div class="form-title-row">
+        <h2 id="formTitle" data-i18n="common.loading">Loading build...</h2>
+        <div class="form-badge-area">
+          <span id="buildBadge" class="badge">...</span>
+          <a href="#" id="parentBuildLink" class="btn-link" style="display: none;" data-i18n="car.view_original">← View original</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Form -->
+    <form id="carForm" novalidate>
+
+      <!-- STATUS FEEDBACK -->
+      <div id="formStatus" class="status-text" style="margin-bottom: 16px;"></div>
+
+      <!-- DYNAMIC SECTIONS CONTAINER -->
+      <div id="accordionContainer"></div>
+
+      <!-- FORM ACTIONS -->
+      <div class="form-actions">
+        <div class="form-actions-left">
+          <button type="submit" id="btnSave" class="btn" data-i18n="car.save">Save Build</button>
+          <button type="button" id="btnShare" class="btn-outline" style="display: none;" data-i18n="car.share">Share</button>
+        </div>
+        <button type="button" id="btnDelete" class="btn-danger" style="display: none;" data-i18n="car.delete">Delete</button>
+      </div>
+
+    </form>
+  </main>
+
+  <!-- SHARE MODAL -->
+  <div id="shareModal" class="modal-overlay">
+    <div class="modal">
+      <h3 class="modal-title" data-i18n="car.share_modal.title">Share <em>Build</em></h3>
+      <div id="modalStatus" class="status-text" style="margin-bottom: 16px;"></div>
+      <form id="shareForm" novalidate>
+        <div class="field-group">
+          <label for="shareGamertagInput" class="field-label" data-i18n="car.share_modal.gamertag_label">User Gamertag</label>
+          <input type="text" id="shareGamertagInput" class="field-input" placeholder="Ex: ForzaKing99" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="btnCancelShare" class="btn-clear" data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="btn" data-i18n="car.share_modal.grant_access">Grant Access</button>
+        </div>
+      </form>
+      
+      <!-- MY FRIENDS QUICK SELECT -->
+      <div class="share-list" style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 16px;">
+        <div class="share-list-title" data-i18n="car.share_modal.friends_title">My Friends</div>
+        <div id="friendsContainer" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;"></div>
+        <div style="display: flex; gap: 8px; margin-top: 12px;">
+          <input type="text" id="addFriendGamertagInput" class="field-input" placeholder="Friend gamertag..." style="font-size: 0.8rem; padding: 6px 12px; height: auto;" data-i18n="car.share_modal.add_friend_placeholder">
+          <button type="button" id="btnAddFriend" class="btn" style="padding: 6px 14px; font-size: 0.72rem; height: auto;">+</button>
+        </div>
+      </div>
+
+      <div class="share-list">
+        <div class="share-list-title" data-i18n="car.share_modal.pilots_with_access">Pilots with Access</div>
+        <div id="sharedUsersContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <span data-i18n="common.footer">FORZA HORIZON 6 GARAGE &copy; 2026. DESENVOLVIDO PARA PILOTOS.</span>
+    &nbsp;&bull;&nbsp;
+    <a href="instructions.html" data-i18n="instructions.title" style="color: var(--cyan); text-decoration: none;">Instruções</a>
+  </footer>
+
+  <script type="module" src="js/car-form.js"></script>
+</body>
+</html>

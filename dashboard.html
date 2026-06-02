@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forza Garage — Garagem</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-tag">FORZA</span>
+        <h1><a href="dashboard.html" style="color: inherit; text-decoration: none;">FH6 <em>Garage</em></a></h1>
+      </div>
+      <div class="header-user" style="display: flex; align-items: center; gap: 16px;">
+        <div class="lang-toggle">
+          <button class="lang-btn" data-lang="en">EN</button>
+          <span style="color: var(--muted);">/</span>
+          <button class="lang-btn" data-lang="pt">PT</button>
+        </div>
+        <div class="unit-toggle-header">
+          <span data-i18n="units.toggle_label">Units:</span>
+          <select id="headerUnitSystem" class="unit-system-select">
+            <option value="mixed" data-i18n="units.mixed">Forza Style</option>
+            <option value="metric" data-i18n="units.metric">Metric</option>
+            <option value="imperial" data-i18n="units.imperial">Imperial</option>
+            <option value="custom" data-i18n="units.custom">Custom</option>
+          </select>
+        </div>
+        <span id="userGamertag" class="header-gamertag">GAMERTAG: <span>...</span></span>
+        <a href="admin.html" id="adminLink" class="btn-link" style="display: none;" data-i18n="admin.title">Painel Admin</a>
+        <button id="btnLogout" class="btn-clear" data-i18n="auth.logout">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    
+    <!-- Title & Action -->
+    <div class="dashboard-actions">
+      <div class="dashboard-title-area">
+        <h2 data-i18n="dashboard.title">Sua Garagem</h2>
+      </div>
+      <a href="car-form.html" class="btn" data-i18n="dashboard.new_car">Novo Carro</a>
+    </div>
+
+    <!-- Filters Bar -->
+    <section class="filters-bar">
+      <div class="filters-label" data-i18n="dashboard.filter_title">Filtrar builds</div>
+      <div class="filters-grid">
+        
+        <div class="filter-group">
+          <label for="filterMake" data-i18n="dashboard.filter_make">Marca</label>
+          <input type="text" id="filterMake" class="field-input" placeholder="Ex: Porsche, Ferrari">
+        </div>
+
+        <div class="filter-group">
+          <label for="filterClass" data-i18n="dashboard.filter_class">Classe PI</label>
+          <select id="filterClass" class="field-select">
+            <option value="" data-i18n="dashboard.filter_all">Todas</option>
+            <option value="X">Classe X</option>
+            <option value="S2">Classe S2</option>
+            <option value="S1">Classe S1</option>
+            <option value="A">Classe A</option>
+            <option value="B">Classe B</option>
+            <option value="C">Classe C</option>
+            <option value="D">Classe D</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterOwner" data-i18n="dashboard.filter_owner">Dono Original (Gamertag)</label>
+          <input type="text" id="filterOwner" class="field-input" placeholder="Ex: ForzaKing">
+        </div>
+
+      </div>
+
+      <div class="filters-actions">
+        <div id="filterCount" class="filter-count">Mostrando <span>0</span> carros</div>
+        <button id="btnClearFilters" class="btn-clear" data-i18n="dashboard.clear_filters">Limpar Filtros</button>
+      </div>
+    </section>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="loading">
+      <div class="spinner"></div>
+      <span data-i18n="common.loading">Carregando garagem...</span>
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="empty" style="display: none;">
+      <div class="icon">🏎️</div>
+      <span data-i18n="dashboard.empty">Sua garagem está vazia. Crie um novo build!</span>
+      <div style="margin-top: 14px;">
+        <a href="car-form.html" class="btn" data-i18n="dashboard.new_car">Cadastrar Primeiro Carro</a>
+      </div>
+    </div>
+
+    <!-- Cars Grid -->
+    <div id="carsGrid" class="cards-grid">
+      <!-- Dynamically filled by garage.js -->
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <span data-i18n="common.footer">FORZA HORIZON 6 GARAGE &copy; 2026. DESENVOLVIDO PARA PILOTOS.</span>
+    &nbsp;&bull;&nbsp;
+    <a href="instructions.html" data-i18n="instructions.title" style="color: var(--cyan); text-decoration: none;">Instruções</a>
+  </footer>
+
+  <!-- Script Modules -->
+  <script type="module" src="js/garage.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "fh6-tunner",
+  "version": "1.0.0",
+  "description": "Forza Horizon 6 Tuner & Garage",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5500",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  }
+}

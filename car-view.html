@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forza Garage — Visualizar Build</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/car-form.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-tag">FORZA</span>
+        <h1><a href="dashboard.html" style="color: inherit; text-decoration: none;">FH6 <em>Garage</em></a></h1>
+      </div>
+      <div class="header-user" style="display: flex; align-items: center; gap: 16px;">
+        <div class="lang-toggle">
+          <button class="lang-btn" data-lang="en">EN</button>
+          <span style="color: var(--muted);">/</span>
+          <button class="lang-btn" data-lang="pt">PT</button>
+        </div>
+        <div class="unit-toggle-header">
+          <span data-i18n="units.toggle_label">Unidades:</span>
+          <select id="headerUnitSystem" class="unit-system-select">
+            <option value="mixed" data-i18n="units.mixed">Estilo Forza</option>
+            <option value="metric" data-i18n="units.metric">Métrico</option>
+            <option value="imperial" data-i18n="units.imperial">Imperial</option>
+            <option value="custom" data-i18n="units.custom">Custom</option>
+          </select>
+        </div>
+        <span id="userGamertag" class="header-gamertag">GAMERTAG: <span>...</span></span>
+        <button id="btnLogout" class="btn-clear" data-i18n="auth.logout">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    
+    <!-- Header Area -->
+    <div class="form-header-area">
+      <a href="dashboard.html" class="btn-back" data-i18n="car.back_to_garage">← Voltar para a garagem</a>
+      <div class="form-title-row">
+        <h2 id="formTitle" data-i18n="common.loading">Carregando build...</h2>
+        <div class="form-badge-area">
+          <span id="buildBadge" class="badge">Aguardando</span>
+          <button id="btnDuplicate" class="btn" style="display: none;">Duplicar para minha garagem</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status message -->
+    <div id="viewStatus" class="status-text" style="margin-bottom: 16px;"></div>
+
+    <!-- DYNAMIC SECTIONS CONTAINER -->
+    <div id="accordionContainer"></div>
+
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <span data-i18n="common.footer">FORZA HORIZON 6 GARAGE &copy; 2026. DESENVOLVIDO PARA PILOTOS.</span>
+    &nbsp;&bull;&nbsp;
+    <a href="instructions.html" data-i18n="instructions.title" style="color: var(--cyan); text-decoration: none;">Instruções</a>
+  </footer>
+
+  <!-- Script Modules -->
+  <script type="module" src="js/car-view.js"></script>
+</body>
+</html>

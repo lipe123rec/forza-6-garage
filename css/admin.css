@@ -1,0 +1,115 @@
+/* admin.css - Styling for the admin panel and codes management */
+
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.admin-section {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-top: 2px solid var(--green);
+  padding: 24px;
+}
+
+.admin-section-title {
+  font-family: var(--cond);
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(179, 211, 53, 0.08);
+  padding-bottom: 8px;
+}
+
+/* Generation Form Layout */
+.generate-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.generate-grid .field-group {
+  flex: 1 1 200px;
+  margin-bottom: 0;
+}
+
+/* Invites Table */
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border2);
+  background: var(--panel2);
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.admin-table th, 
+.admin-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--cond);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+.admin-table th {
+  background: rgba(179, 211, 53, 0.05);
+  color: var(--green);
+  text-transform: uppercase;
+  font-weight: 800;
+  border-bottom: 2px solid rgba(179, 211, 53, 0.2);
+}
+
+.admin-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.code-badge {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--cyan);
+  background: rgba(0, 212, 232, 0.08);
+  padding: 4px 8px;
+  border: 1px solid rgba(0, 212, 232, 0.2);
+  font-weight: 700;
+}
+
+.usage-text {
+  font-weight: 700;
+}
+
+.usage-text.full {
+  color: var(--red);
+}
+
+.usage-text.available {
+  color: var(--green);
+}
+
+/* List of gamertags who activated the code */
+.usage-gamertags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 320px;
+}
+
+.usage-gamertags span {
+  font-size: 0.72rem;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}

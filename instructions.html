@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forza Garage — Instruções</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/instructions.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-tag">FORZA</span>
+        <h1><a href="dashboard.html" style="color: inherit; text-decoration: none;">FH6 <em>Garage</em></a></h1>
+      </div>
+      <div class="header-user" style="display: flex; align-items: center; gap: 16px;">
+        <div class="lang-toggle">
+          <button class="lang-btn" data-lang="en">EN</button>
+          <span style="color: var(--muted);">/</span>
+          <button class="lang-btn" data-lang="pt">PT</button>
+        </div>
+        <div class="unit-toggle-header">
+          <span data-i18n="units.toggle_label">Units:</span>
+          <select id="headerUnitSystem" class="unit-system-select">
+            <option value="mixed" data-i18n="units.mixed">Forza Style</option>
+            <option value="metric" data-i18n="units.metric">Metric</option>
+            <option value="imperial" data-i18n="units.imperial">Imperial</option>
+            <option value="custom" data-i18n="units.custom">Custom</option>
+          </select>
+        </div>
+        <span id="userGamertag" class="header-gamertag">GAMERTAG: <span>...</span></span>
+        <a href="admin.html" id="adminLink" class="btn-link" style="display: none;" data-i18n="admin.title">Painel Admin</a>
+        <button id="btnLogout" class="btn-clear" data-i18n="auth.logout">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="instructions-container">
+      
+      <!-- Back to Garage Button -->
+      <div class="back-btn-container">
+        <a href="dashboard.html" class="back-btn">
+          <span data-i18n="instructions.back_garage">← Voltar para a Garagem</span>
+        </a>
+      </div>
+
+      <!-- Instructions Panel -->
+      <div class="instructions-panel">
+        
+        <!-- Header / Intro -->
+        <div class="instructions-header">
+          <h2 data-i18n="instructions.title">Instruções e Ajuda</h2>
+          <p class="instructions-intro" data-i18n="instructions.intro">
+            Bem-vindo à Central de Instruções e Ajuda da Garagem FH6. Aqui você encontrará tudo o que precisa para gerenciar sua garagem, configurar preferências e compartilhar seus setups de tunagem.
+          </p>
+        </div>
+
+        <!-- Help Guide Grid -->
+        <div class="instructions-grid">
+          
+          <!-- Como alterar idioma -->
+          <div class="section-box">
+            <h3>
+              <span class="icon">🌐</span>
+              <span data-i18n="instructions.lang_title">Como alterar o idioma</span>
+            </h3>
+            <p data-i18n="instructions.lang_desc">
+              Você pode alternar rapidamente entre Português (PT) e Inglês (EN) usando os botões de idioma no cabeçalho de qualquer página. Alternativamente, acesse as Configurações de Perfil para definir o idioma padrão que será carregado automaticamente sempre que você fizer login.
+            </p>
+          </div>
+
+          <!-- Preferências de Medidas -->
+          <div class="section-box">
+            <h3>
+              <span class="icon">📏</span>
+              <span data-i18n="instructions.units_title">Preferências de Medidas</span>
+            </h3>
+            <p data-i18n="instructions.units_desc">
+              O sistema suporta presets rápidos (Métrico, Imperial, Estilo Forza) e Customizado. Se você selecionar "Customizado" no seu Perfil, poderá combinar unidades como quiser (por exemplo, potência em kW, peso em kg e pressão em PSI). Acesse as Configurações de Perfil para salvar suas preferências personalizadas.
+            </p>
+          </div>
+
+          <!-- Como salvar carros e tunagens -->
+          <div class="section-box">
+            <h3>
+              <span class="icon">🏎️</span>
+              <span data-i18n="instructions.save_car_title">Como salvar carros e tunagens</span>
+            </h3>
+            <p data-i18n="instructions.save_car_desc">
+              Use o botão "Novo Carro" no painel principal para cadastrar um veículo. Os campos de tunagem mudam de unidade dinamicamente de acordo com as preferências do seu perfil. Ao digitar valores de pressão ou molas, por exemplo, o sistema faz a conversão e o salvamento em tempo real.
+            </p>
+          </div>
+
+          <!-- Como adicionar amigos -->
+          <div class="section-box">
+            <h3>
+              <span class="icon">👥</span>
+              <span data-i18n="instructions.friends_title">Como adicionar amigos</span>
+            </h3>
+            <p data-i18n="instructions.friends_desc">
+              No painel de compartilhamento de qualquer carro, há uma aba de "Meus Amigos". Digite a Gamertag exata do seu amigo para adicioná-lo à sua lista rápida, facilitando compartilhamentos futuros.
+            </p>
+          </div>
+
+          <!-- Compartilhando seus setups -->
+          <div class="section-box">
+            <h3>
+              <span class="icon">📤</span>
+              <span data-i18n="instructions.share_title">Compartilhando seus setups</span>
+            </h3>
+            <p data-i18n="instructions.share_desc">
+              Abra a visualização de um carro e clique em "Compartilhar". Digite a Gamertag do piloto a quem deseja conceder acesso ou use as pílulas rápidas dos seus amigos adicionados. Eles poderão visualizar, clonar ou favoritar sua tunagem na garagem deles.
+            </p>
+          </div>
+
+          <!-- Revogando acessos compartilhados -->
+          <div class="section-box">
+            <h3>
+              <span class="icon">⛔</span>
+              <span data-i18n="instructions.revoke_title">Revogando acessos compartilhados</span>
+            </h3>
+            <p data-i18n="instructions.revoke_desc">
+              Se você não deseja mais que um piloto acesse seu setup, basta abrir a aba "Compartilhar" no carro correspondente e clicar no botão "Revogar" ao lado da Gamertag na lista de pilotos autorizados.
+            </p>
+          </div>
+
+          <!-- Aviso Importante do Sistema -->
+          <div class="section-box notice-box">
+            <h3>
+              <span class="icon">⚠️</span>
+              <span data-i18n="instructions.system_notice_title">Aviso Importante do Sistema</span>
+            </h3>
+            <p data-i18n="instructions.system_notice_desc">
+              Este é um sistema privado e seguro de compartilhamento de telemetria e tunagens da franquia Forza Horizon. Se precisar de assistência técnica ou encontrar problemas, entre em contato diretamente com o administrador oficial do sistema: <strong>lipe123rec</strong>.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <span data-i18n="common.footer">FORZA HORIZON 6 GARAGE &copy; 2026. DESENVOLVIDO PARA PILOTOS.</span>
+    &nbsp;&bull;&nbsp;
+    <a href="instructions.html" data-i18n="instructions.title" style="color: var(--cyan); text-decoration: none;">Instruções</a>
+  </footer>
+
+  <!-- Script Modules -->
+  <script type="module" src="js/instructions.js"></script>
+</body>
+</html>

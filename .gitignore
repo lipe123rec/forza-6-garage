@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+.vscode/
+.DS_Store
+*.log
+
+# Private setup files (contains SQL schema and project docs/guides)
+private-files/
