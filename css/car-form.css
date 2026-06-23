@@ -357,3 +357,54 @@
 .tuning-tab-panel.active {
   display: grid; /* Inherits grid template columns from .accordion-content */
 }
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .tuning-scroll-btn {
+    padding: 0 10px;
+    font-size: 0.9rem;
+  }
+  
+  .tuning-tab-btn {
+    padding: 12px 14px;
+    font-size: 0.8rem;
+  }
+
+  .accordion-content {
+    padding: 16px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .form-actions-left {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .form-actions-left button,
+  .form-actions button {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 0.85rem;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .tuning-scroll-btn {
+    padding: 0 8px;
+  }
+
+  .tuning-tab-btn {
+    padding: 12px 12px;
+    font-size: 0.78rem;
+  }
+}
