@@ -56,6 +56,9 @@ header {
   backdrop-filter: blur(14px);
   border-bottom: 2px solid var(--green);
   padding: 0 40px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
 .header-inner {
