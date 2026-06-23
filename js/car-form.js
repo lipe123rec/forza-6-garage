@@ -27,6 +27,49 @@ const elBtnDelete = document.getElementById('btnDelete');
 const elUnitSystem = document.getElementById('headerUnitSystem');
 const elAccordionContainer = document.getElementById('accordionContainer');
 
+// Car Image DOM Elements
+let elCarImageContainer = null;
+let elCarImage = null;
+let elCarImagePlaceholder = null;
+
+function getCarImageUrl(make, carModel, year) {
+  const makePart = String(make || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-');
+  const modelPart = String(carModel || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-');
+  const yearPart = year ? String(year) : '';
+  const path = [yearPart, makePart, modelPart].filter(Boolean).join('-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+  return `https://www.forzafire.com/images/base/cars/${path}.png`;
+}
+
+function updateFormCarImage() {
+  const elMake = document.getElementById('make');
+  const elCar = document.getElementById('car');
+  const elYear = document.getElementById('year');
+
+  if (!elMake || !elCar || !elYear || !elCarImageContainer || !elCarImage) return;
+
+  const makeVal = elMake.value.trim();
+  const carVal = elCar.value.trim();
+  const yearVal = elYear.value.trim();
+
+  if (makeVal && carVal) {
+    elCarImageContainer.style.display = 'flex';
+    elCarImage.style.display = 'none';
+    if (elCarImagePlaceholder) {
+      elCarImagePlaceholder.textContent = t('car.image_loading');
+      elCarImagePlaceholder.style.display = 'block';
+    }
+    elCarImage.src = getCarImageUrl(makeVal, carVal, yearVal);
+  } else {
+    elCarImageContainer.style.display = 'flex';
+    elCarImage.style.display = 'none';
+    if (elCarImagePlaceholder) {
+      elCarImagePlaceholder.textContent = t('car.image_select');
+      elCarImagePlaceholder.style.display = 'block';
+    }
+    elCarImage.removeAttribute('src');
+  }
+}
+
 // Dynamically generate FIELD_GROUPS and allFieldNames from CAR_FIELDS config
 const FIELD_GROUPS = {};
 const allFieldNames = [];
@@ -386,6 +429,124 @@ function renderFormHTML() {
       });
 
       accBodyInner.appendChild(panelsContainer);
+    } else if (section.id === 'details') {
+      const detailsLayout = document.createElement('div');
+      detailsLayout.className = 'details-layout';
+
+      const imgContainer = document.createElement('div');
+      imgContainer.id = 'carImageContainer';
+      imgContainer.className = 'car-form-image-container';
+      imgContainer.style.display = 'flex';
+      imgContainer.style.justifyContent = 'center';
+      imgContainer.style.alignItems = 'center';
+      imgContainer.style.background = 'rgba(0, 0, 0, 0.25)';
+      imgContainer.style.border = '1px solid var(--border)';
+      imgContainer.style.borderRadius = '4px';
+      imgContainer.style.padding = '12px';
+      imgContainer.style.flex = '1 1 300px';
+      imgContainer.style.minHeight = '180px';
+      imgContainer.style.maxHeight = '240px';
+      imgContainer.style.position = 'relative';
+
+      const imgEl = document.createElement('img');
+      imgEl.id = 'carImage';
+      imgEl.alt = 'Car Image';
+      imgEl.style.maxWidth = '100%';
+      imgEl.style.maxHeight = '220px';
+      imgEl.style.objectFit = 'contain';
+      imgEl.style.display = 'none';
+
+      const placeholderEl = document.createElement('div');
+      placeholderEl.id = 'carImagePlaceholder';
+      placeholderEl.style.fontFamily = 'var(--cond)';
+      placeholderEl.style.fontSize = '0.8rem';
+      placeholderEl.style.color = 'var(--muted)';
+      placeholderEl.style.textTransform = 'uppercase';
+      placeholderEl.style.textAlign = 'center';
+      placeholderEl.textContent = t('car.image_select');
+
+      imgContainer.appendChild(imgEl);
+      imgContainer.appendChild(placeholderEl);
+      detailsLayout.appendChild(imgContainer);
+
+      const accContent = document.createElement('div');
+      accContent.className = 'accordion-content';
+      accContent.style.flex = '2 1 400px';
+      accContent.style.padding = '0';
+
+      section.fields.forEach(field => {
+        const fieldGroup = document.createElement('div');
+        fieldGroup.className = 'field-group';
+
+        const label = document.createElement('label');
+        label.setAttribute('for', field.id);
+        label.className = 'field-label';
+        
+        label.dataset.i18n = `car.fields.${field.id}`;
+        label.textContent = t(`car.fields.${field.id}`) + (field.required ? ' *' : '');
+
+        let inputEl;
+        if (field.type === 'select') {
+          inputEl = document.createElement('select');
+          inputEl.id = field.id;
+          inputEl.className = 'field-select';
+          if (field.required) inputEl.required = true;
+
+          if (field.id === 'class') {
+            const optAll = document.createElement('option');
+            optAll.value = '';
+            optAll.dataset.i18n = 'dashboard.filter_all';
+            optAll.textContent = t('dashboard.filter_all');
+            inputEl.appendChild(optAll);
+          }
+
+          field.options.forEach(opt => {
+            const optEl = document.createElement('option');
+            optEl.value = opt;
+            optEl.textContent = opt;
+            inputEl.appendChild(optEl);
+          });
+        } else if (field.type === 'textarea') {
+          inputEl = document.createElement('textarea');
+          inputEl.id = field.id;
+          inputEl.className = 'field-input';
+          inputEl.style.height = '80px';
+          inputEl.style.resize = 'vertical';
+          if (field.required) inputEl.required = true;
+          
+          if (field.placeholder_key) {
+            inputEl.dataset.i18n = field.placeholder_key;
+            inputEl.placeholder = t(field.placeholder_key);
+          } else if (field.placeholder) {
+            inputEl.placeholder = field.placeholder;
+          }
+        } else {
+          inputEl = document.createElement('input');
+          inputEl.type = field.type;
+          inputEl.id = field.id;
+          inputEl.className = 'field-input';
+          if (field.required) inputEl.required = true;
+          if (field.step) inputEl.setAttribute('step', field.step);
+          
+          if (field.placeholder_key) {
+            inputEl.dataset.i18n = field.placeholder_key;
+            inputEl.placeholder = t(field.placeholder_key);
+          } else if (field.placeholder) {
+            inputEl.placeholder = field.placeholder;
+          }
+        }
+
+        fieldGroup.appendChild(label);
+        fieldGroup.appendChild(inputEl);
+        accContent.appendChild(fieldGroup);
+      });
+
+      detailsLayout.appendChild(accContent);
+      accBodyInner.appendChild(detailsLayout);
+
+      elCarImageContainer = imgContainer;
+      elCarImage = imgEl;
+      elCarImagePlaceholder = placeholderEl;
     } else {
       const accContent = document.createElement('div');
       accContent.className = 'accordion-content';
@@ -571,6 +732,29 @@ async function init() {
     translateFormUI();
   }
 
+  if (elCarImage) {
+    elCarImage.addEventListener('load', () => {
+      elCarImage.style.display = 'block';
+      if (elCarImagePlaceholder) elCarImagePlaceholder.style.display = 'none';
+    });
+    elCarImage.addEventListener('error', () => {
+      elCarImage.style.display = 'none';
+      if (elCarImagePlaceholder) {
+        elCarImagePlaceholder.textContent = t('car.image_not_found');
+        elCarImagePlaceholder.style.display = 'block';
+      }
+    });
+  }
+
+  // Monitor input fields to update the car image dynamically
+  const elMake = document.getElementById('make');
+  const elCar = document.getElementById('car');
+  const elYear = document.getElementById('year');
+
+  if (elMake) elMake.addEventListener('input', updateFormCarImage);
+  if (elCar) elCar.addEventListener('input', updateFormCarImage);
+  if (elYear) elYear.addEventListener('input', updateFormCarImage);
+
   if (elCarForm) {
     elCarForm.addEventListener('submit', handleFormSubmit);
   }
@@ -723,6 +907,7 @@ function translateFormUI() {
   });
 
   applyTranslations();
+  updateFormCarImage();
 }
 
 /**
@@ -827,6 +1012,9 @@ async function loadCarData(id) {
     const elCar = document.getElementById('car');
     if (elMake) elMake.dispatchEvent(new Event('input'));
     if (elCar) elCar.dispatchEvent(new Event('input'));
+    
+    // Update car image on load
+    updateFormCarImage();
   } catch (err) {
     console.error('Error loading car data:', err);
     alert(t('car.messages.load_error') + err.message);

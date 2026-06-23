@@ -22,6 +22,41 @@ const elViewStatus = document.getElementById('viewStatus');
 const elUnitSystem = document.getElementById('headerUnitSystem');
 const elAccordionContainer = document.getElementById('accordionContainer');
 
+// Car Image DOM Elements
+let elCarImageContainer = null;
+let elCarImage = null;
+let elCarImagePlaceholder = null;
+
+function getCarImageUrl(make, carModel, year) {
+  const makePart = String(make || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-');
+  const modelPart = String(carModel || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-');
+  const yearPart = year ? String(year) : '';
+  const path = [yearPart, makePart, modelPart].filter(Boolean).join('-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+  return `https://www.forzafire.com/images/base/cars/${path}.png`;
+}
+
+function updateViewCarImage(make, carModel, year) {
+  if (!elCarImageContainer || !elCarImage) return;
+
+  if (make && carModel) {
+    elCarImageContainer.style.display = 'flex';
+    elCarImage.style.display = 'none';
+    if (elCarImagePlaceholder) {
+      elCarImagePlaceholder.textContent = t('car.image_loading');
+      elCarImagePlaceholder.style.display = 'block';
+    }
+    elCarImage.src = getCarImageUrl(make, carModel, year);
+  } else {
+    elCarImageContainer.style.display = 'flex';
+    elCarImage.style.display = 'none';
+    if (elCarImagePlaceholder) {
+      elCarImagePlaceholder.textContent = t('car.image_select');
+      elCarImagePlaceholder.style.display = 'block';
+    }
+    elCarImage.removeAttribute('src');
+  }
+}
+
 // Dynamically generate FIELD_GROUPS and allFieldNames from CAR_FIELDS config
 const FIELD_GROUPS = {
   make: 'root',
@@ -303,6 +338,76 @@ function renderViewHTML() {
       });
 
       accBody.appendChild(panelsContainer);
+    } else if (section.id === 'details') {
+      const detailsLayout = document.createElement('div');
+      detailsLayout.className = 'details-layout';
+
+      const imgContainer = document.createElement('div');
+      imgContainer.id = 'carImageContainer';
+      imgContainer.className = 'car-form-image-container';
+      imgContainer.style.display = 'flex';
+      imgContainer.style.justifyContent = 'center';
+      imgContainer.style.alignItems = 'center';
+      imgContainer.style.background = 'rgba(0, 0, 0, 0.25)';
+      imgContainer.style.border = '1px solid var(--border)';
+      imgContainer.style.borderRadius = '4px';
+      imgContainer.style.padding = '12px';
+      imgContainer.style.flex = '1 1 300px';
+      imgContainer.style.minHeight = '180px';
+      imgContainer.style.maxHeight = '240px';
+      imgContainer.style.position = 'relative';
+
+      const imgEl = document.createElement('img');
+      imgEl.id = 'carImage';
+      imgEl.alt = 'Car Image';
+      imgEl.style.maxWidth = '100%';
+      imgEl.style.maxHeight = '220px';
+      imgEl.style.objectFit = 'contain';
+      imgEl.style.display = 'none';
+
+      const placeholderEl = document.createElement('div');
+      placeholderEl.id = 'carImagePlaceholder';
+      placeholderEl.style.fontFamily = 'var(--cond)';
+      placeholderEl.style.fontSize = '0.8rem';
+      placeholderEl.style.color = 'var(--muted)';
+      placeholderEl.style.textTransform = 'uppercase';
+      placeholderEl.style.textAlign = 'center';
+      placeholderEl.textContent = t('car.image_select');
+
+      imgContainer.appendChild(imgEl);
+      imgContainer.appendChild(placeholderEl);
+      detailsLayout.appendChild(imgContainer);
+
+      const accContent = document.createElement('div');
+      accContent.className = 'accordion-content';
+      accContent.style.flex = '2 1 400px';
+      accContent.style.padding = '0';
+
+      section.fields.forEach(field => {
+        const fieldGroup = document.createElement('div');
+        fieldGroup.className = 'field-group';
+
+        const label = document.createElement('span');
+        label.className = 'field-label';
+        label.dataset.i18n = `car.fields.${field.id}`;
+        label.textContent = t(`car.fields.${field.id}`);
+
+        const displayDiv = document.createElement('div');
+        displayDiv.id = `val-${field.id}`;
+        displayDiv.className = 'field-input-readonly';
+        displayDiv.textContent = '—';
+
+        fieldGroup.appendChild(label);
+        fieldGroup.appendChild(displayDiv);
+        accContent.appendChild(fieldGroup);
+      });
+
+      detailsLayout.appendChild(accContent);
+      accBody.appendChild(detailsLayout);
+
+      elCarImageContainer = imgContainer;
+      elCarImage = imgEl;
+      elCarImagePlaceholder = placeholderEl;
     } else {
       const accContent = document.createElement('div');
       accContent.className = 'accordion-content';
@@ -366,6 +471,20 @@ async function init() {
 
   // Render view fields HTML dynamically
   renderViewHTML();
+
+  if (elCarImage) {
+    elCarImage.addEventListener('load', () => {
+      elCarImage.style.display = 'block';
+      if (elCarImagePlaceholder) elCarImagePlaceholder.style.display = 'none';
+    });
+    elCarImage.addEventListener('error', () => {
+      elCarImage.style.display = 'none';
+      if (elCarImagePlaceholder) {
+        elCarImagePlaceholder.textContent = t('car.image_not_found');
+        elCarImagePlaceholder.style.display = 'block';
+      }
+    });
+  }
 
   // Initialize lang toggle buttons
   const currentLang = getLang();
@@ -434,6 +553,20 @@ async function init() {
     return;
   }
 
+  if (elCarImage) {
+    elCarImage.addEventListener('load', () => {
+      elCarImage.style.display = 'block';
+      if (elCarImagePlaceholder) elCarImagePlaceholder.style.display = 'none';
+    });
+    elCarImage.addEventListener('error', () => {
+      elCarImage.style.display = 'none';
+      if (elCarImagePlaceholder) {
+        elCarImagePlaceholder.textContent = 'Imagem não encontrada';
+        elCarImagePlaceholder.style.display = 'block';
+      }
+    });
+  }
+
   await loadCarDetails();
 }
 
@@ -485,6 +618,7 @@ async function loadCarDetails() {
     }
 
     renderAllFields();
+    updateViewCarImage(car.make, car.car, car.year);
 
   } catch (err) {
     console.error('Error loading car details:', err);
@@ -573,6 +707,9 @@ function renderAllFields() {
 
   // Re-translate static labels
   applyTranslations();
+  if (currentCarData) {
+    updateViewCarImage(currentCarData.make, currentCarData.car, currentCarData.year);
+  }
 }
 
 /**

@@ -55,6 +55,9 @@ export default {
     back_to_garage: '← Back to Garage',
     view_original: '← View original',
     new_car_title: 'NEW BUILD',
+    image_select: '🏎️ Select Make, Model and Year',
+    image_loading: 'Loading image...',
+    image_not_found: 'Image not found',
     tuning_groups: {
       tires: 'Tire Pressure',
       gearing: 'Gearing',

@@ -221,6 +221,14 @@ function clearFilters() {
   applyFilters();
 }
 
+function getCarImageUrl(make, carModel, year) {
+  const makePart = String(make || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-');
+  const modelPart = String(carModel || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-');
+  const yearPart = year ? String(year) : '';
+  const path = [yearPart, makePart, modelPart].filter(Boolean).join('-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+  return `https://www.forzafire.com/images/base/cars/${path}.png`;
+}
+
 /**
  * Render the list of cards
  */
@@ -282,6 +290,11 @@ function renderCarsGrid(cars) {
       <div class="car-card-header">
         <div class="car-card-brand">${car.year || '—'} ${car.make || 'MARCA'}</div>
         <div class="car-card-name">${car.car || 'Modelo do Carro'}</div>
+      </div>
+
+      <div class="car-card-image-container" style="text-align: center; background: rgba(0, 0, 0, 0.2); border-radius: 4px; padding: 4px; height: 110px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-top: 4px;">
+        <img class="car-card-image" src="${getCarImageUrl(car.make, car.car, car.year)}" alt="${car.car}" style="max-width: 100%; max-height: 100%; object-fit: contain; display: none;" onload="this.style.display='block'; const ph=this.nextElementSibling; if(ph) ph.style.display='none';">
+        <div class="car-card-image-placeholder" style="font-family: var(--cond); font-size: 0.65rem; color: var(--muted); text-transform: uppercase;">🏎️ No Image</div>
       </div>
 
       <div class="car-card-specs">

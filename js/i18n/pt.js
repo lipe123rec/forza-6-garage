@@ -55,6 +55,9 @@ export default {
     back_to_garage: '← Voltar para a Garagem',
     view_original: '← Ver original',
     new_car_title: 'NOVO CARRO',
+    image_select: '🏎️ Selecione Marca, Modelo e Ano',
+    image_loading: 'Carregando imagem...',
+    image_not_found: 'Imagem não encontrada',
     tuning_groups: {
       tires: 'Pressão dos Pneus',
       gearing: 'Marchas',

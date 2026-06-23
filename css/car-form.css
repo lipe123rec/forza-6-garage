@@ -408,3 +408,26 @@
     font-size: 0.78rem;
   }
 }
+
+/* Details Section Split Layout Styles */
+.details-layout {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .details-layout {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px !important;
+  }
+  .car-form-image-container {
+    flex: 1 1 auto !important;
+    width: 100%;
+    min-height: 150px;
+    max-height: 200px;
+  }
+}
