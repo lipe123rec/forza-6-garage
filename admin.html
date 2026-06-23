@@ -18,26 +18,66 @@
         <span class="logo-tag">FORZA</span>
         <h1><a href="dashboard.html" style="color: inherit; text-decoration: none;">FH6 <em>Garage</em></a></h1>
       </div>
-      <div class="header-user" style="display: flex; align-items: center; gap: 16px;">
-        <div class="lang-toggle">
-          <button class="lang-btn" data-lang="en">EN</button>
-          <span style="color: var(--muted);">/</span>
-          <button class="lang-btn" data-lang="pt">PT</button>
-        </div>
-        <div class="unit-toggle-header">
-          <span data-i18n="units.toggle_label">Units:</span>
-          <select id="headerUnitSystem" class="unit-system-select">
-            <option value="mixed" data-i18n="units.mixed">Forza Style</option>
-            <option value="metric" data-i18n="units.metric">Metric</option>
-            <option value="imperial" data-i18n="units.imperial">Imperial</option>
-            <option value="custom" data-i18n="units.custom">Custom</option>
-          </select>
-        </div>
-        <span id="userGamertag" class="header-gamertag">GAMERTAG: <span>...</span></span>
-        <button id="btnLogout" class="btn-clear" data-i18n="auth.logout">Sair</button>
+      <div class="header-user">
+        <button id="btnMenu" class="btn-menu" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Drawer Menu -->
+  <div id="drawerMenu" class="drawer-overlay">
+    <div class="drawer">
+      <div class="drawer-header">
+        <div class="logo">
+          <span class="logo-tag">FORZA</span>
+          <h2>FH6 <em>Garage</em></h2>
+        </div>
+        <button id="btnCloseMenu" class="btn-close-menu">&times;</button>
+      </div>
+      <div class="drawer-body">
+        <div class="drawer-gamertag-area">
+          <span id="userGamertag" class="drawer-gamertag">GAMERTAG: <span>...</span></span>
+        </div>
+        
+        <div class="drawer-item">
+          <span class="drawer-label" data-i18n="units.toggle_label">Units:</span>
+          <div class="unit-toggle-drawer">
+            <select id="headerUnitSystem" class="unit-system-select">
+              <option value="mixed" data-i18n="units.mixed">Forza Style</option>
+              <option value="metric" data-i18n="units.metric">Metric</option>
+              <option value="imperial" data-i18n="units.imperial">Imperial</option>
+              <option value="custom" data-i18n="units.custom">Custom</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="drawer-item">
+          <span class="drawer-label" data-i18n="common.language">Language:</span>
+          <div class="lang-toggle-drawer">
+            <div class="lang-toggle">
+              <button class="lang-btn" data-lang="en">EN</button>
+              <span style="color: var(--muted);">/</span>
+              <button class="lang-btn" data-lang="pt">PT</button>
+            </div>
+          </div>
+        </div>
+
+        <nav class="drawer-nav">
+          <a href="dashboard.html" class="drawer-nav-link" data-i18n="dashboard.title">Minha Garagem</a>
+          <a href="instructions.html" class="drawer-nav-link" data-i18n="instructions.title">Instruções</a>
+          <a href="admin.html" id="adminLink" class="drawer-nav-link" style="display: none;" data-i18n="admin.title">Painel Admin</a>
+        </nav>
+      </div>
+      
+      <div class="drawer-footer">
+        <button id="btnLogout" class="btn-clear logout-drawer-btn" data-i18n="auth.logout">Sair</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Main Content -->
   <main>

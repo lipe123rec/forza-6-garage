@@ -180,6 +180,9 @@ export async function requireAuth() {
     setLang(profile.preferred_language);
   }
 
+  // Initialize responsive drawer menu events
+  initDrawer();
+
   return { user, profile };
 }
 
@@ -196,4 +199,33 @@ export async function requireAdmin() {
     return null;
   }
   return authInfo;
+}
+
+/**
+ * Initialize responsive drawer menu open/close listeners
+ */
+function initDrawer() {
+  const btnMenu = document.getElementById('btnMenu');
+  const btnCloseMenu = document.getElementById('btnCloseMenu');
+  const drawerMenu = document.getElementById('drawerMenu');
+
+  if (btnMenu && drawerMenu) {
+    btnMenu.addEventListener('click', () => {
+      drawerMenu.classList.add('open');
+    });
+  }
+
+  if (btnCloseMenu && drawerMenu) {
+    btnCloseMenu.addEventListener('click', () => {
+      drawerMenu.classList.remove('open');
+    });
+  }
+
+  if (drawerMenu) {
+    drawerMenu.addEventListener('click', (e) => {
+      if (e.target === drawerMenu) {
+        drawerMenu.classList.remove('open');
+      }
+    });
+  }
 }
