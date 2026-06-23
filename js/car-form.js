@@ -85,89 +85,245 @@ function renderFormHTML() {
     accContent.className = 'accordion-content';
 
     // Populate Fields
-    section.fields.forEach(field => {
-      // Add optional group header (primarily for Tuning)
-      if (field.group_header_key) {
-        const gh = document.createElement('div');
-        gh.className = 'grid-span-full';
-        gh.dataset.i18n = field.group_header_key;
-        gh.textContent = t(field.group_header_key);
-        accContent.appendChild(gh);
-      }
+    if (section.id === 'tuning') {
+      const tabsWrapper = document.createElement('div');
+      tabsWrapper.className = 'tuning-tabs-wrapper';
 
-      const fieldGroup = document.createElement('div');
-      fieldGroup.className = 'field-group';
+      const btnLeft = document.createElement('button');
+      btnLeft.type = 'button';
+      btnLeft.className = 'tuning-scroll-btn left-btn';
+      btnLeft.textContent = '◀';
 
-      const label = document.createElement('label');
-      label.setAttribute('for', field.id);
-      label.className = 'field-label';
-      
-      if (field.is_gear) {
-        label.dataset.i18nN = 'car.fields.gearing_n';
-        label.dataset.i18nNVal = field.gear_num;
-        label.textContent = t('car.fields.gearing_n', { n: field.gear_num });
-      } else {
-        label.dataset.i18n = `car.fields.${field.id}`;
-        label.textContent = t(`car.fields.${field.id}`) + (field.required ? ' *' : '');
-      }
+      const tabsScroll = document.createElement('div');
+      tabsScroll.className = 'tuning-tabs-scroll';
 
-      let inputEl;
-      if (field.type === 'select') {
-        inputEl = document.createElement('select');
-        inputEl.id = field.id;
-        inputEl.className = 'field-select';
-        if (field.required) inputEl.required = true;
+      const tabsList = document.createElement('div');
+      tabsList.className = 'tuning-tabs-list';
 
-        if (field.id === 'class') {
-          const optAll = document.createElement('option');
-          optAll.value = '';
-          optAll.dataset.i18n = 'dashboard.filter_all';
-          optAll.textContent = t('dashboard.filter_all');
-          inputEl.appendChild(optAll);
+      const btnRight = document.createElement('button');
+      btnRight.type = 'button';
+      btnRight.className = 'tuning-scroll-btn right-btn';
+      btnRight.textContent = '▶';
+
+      tabsScroll.appendChild(tabsList);
+      tabsWrapper.appendChild(btnLeft);
+      tabsWrapper.appendChild(tabsScroll);
+      tabsWrapper.appendChild(btnRight);
+
+      accBodyInner.appendChild(tabsWrapper);
+
+      const tabsData = [];
+      let currentTab = null;
+
+      section.fields.forEach(field => {
+        if (field.group_header_key) {
+          currentTab = {
+            id: field.group_header_key,
+            title_key: field.group_header_key,
+            fields: []
+          };
+          tabsData.push(currentTab);
+        }
+        if (currentTab) {
+          currentTab.fields.push(field);
+        }
+      });
+
+      const panelsContainer = document.createElement('div');
+      panelsContainer.className = 'tuning-panels-container';
+
+      tabsData.forEach((tab, tIndex) => {
+        const tabBtn = document.createElement('button');
+        tabBtn.type = 'button';
+        tabBtn.className = 'tuning-tab-btn';
+        tabBtn.dataset.tabTarget = tab.id;
+        tabBtn.dataset.i18n = tab.title_key;
+        tabBtn.textContent = t(tab.title_key);
+        if (tIndex === 0) {
+          tabBtn.classList.add('active');
+        }
+        tabsList.appendChild(tabBtn);
+
+        const tabPanel = document.createElement('div');
+        tabPanel.className = 'accordion-content tuning-tab-panel';
+        tabPanel.dataset.tabId = tab.id;
+        if (tIndex === 0) {
+          tabPanel.classList.add('active');
         }
 
-        field.options.forEach(opt => {
-          const optEl = document.createElement('option');
-          optEl.value = opt;
-          optEl.textContent = opt;
-          inputEl.appendChild(optEl);
+        tab.fields.forEach(field => {
+          const fieldGroup = document.createElement('div');
+          fieldGroup.className = 'field-group';
+
+          const label = document.createElement('label');
+          label.setAttribute('for', field.id);
+          label.className = 'field-label';
+          
+          if (field.is_gear) {
+            label.dataset.i18nN = 'car.fields.gearing_n';
+            label.dataset.i18nNVal = field.gear_num;
+            label.textContent = t('car.fields.gearing_n', { n: field.gear_num });
+          } else {
+            label.dataset.i18n = `car.fields.${field.id}`;
+            label.textContent = t(`car.fields.${field.id}`) + (field.required ? ' *' : '');
+          }
+
+          let inputEl;
+          if (field.type === 'select') {
+            inputEl = document.createElement('select');
+            inputEl.id = field.id;
+            inputEl.className = 'field-select';
+            if (field.required) inputEl.required = true;
+
+            field.options.forEach(opt => {
+              const optEl = document.createElement('option');
+              optEl.value = opt;
+              optEl.textContent = opt;
+              inputEl.appendChild(optEl);
+            });
+          } else if (field.type === 'textarea') {
+            inputEl = document.createElement('textarea');
+            inputEl.id = field.id;
+            inputEl.className = 'field-input';
+            inputEl.style.height = '80px';
+            inputEl.style.resize = 'vertical';
+            if (field.required) inputEl.required = true;
+            
+            if (field.placeholder_key) {
+              inputEl.dataset.i18n = field.placeholder_key;
+              inputEl.placeholder = t(field.placeholder_key);
+            } else if (field.placeholder) {
+              inputEl.placeholder = field.placeholder;
+            }
+          } else {
+            inputEl = document.createElement('input');
+            inputEl.type = field.type;
+            inputEl.id = field.id;
+            inputEl.className = 'field-input';
+            if (field.required) inputEl.required = true;
+            if (field.step) inputEl.setAttribute('step', field.step);
+            
+            if (field.placeholder_key) {
+              inputEl.dataset.i18n = field.placeholder_key;
+              inputEl.placeholder = t(field.placeholder_key);
+            } else if (field.placeholder) {
+              inputEl.placeholder = field.placeholder;
+            }
+          }
+
+          fieldGroup.appendChild(label);
+          fieldGroup.appendChild(inputEl);
+          tabPanel.appendChild(fieldGroup);
         });
-      } else if (field.type === 'textarea') {
-        inputEl = document.createElement('textarea');
-        inputEl.id = field.id;
-        inputEl.className = 'field-input';
-        inputEl.style.height = '80px';
-        inputEl.style.resize = 'vertical';
-        if (field.required) inputEl.required = true;
-        
-        if (field.placeholder_key) {
-          inputEl.dataset.i18n = field.placeholder_key;
-          inputEl.placeholder = t(field.placeholder_key);
-        } else if (field.placeholder) {
-          inputEl.placeholder = field.placeholder;
-        }
-      } else {
-        inputEl = document.createElement('input');
-        inputEl.type = field.type;
-        inputEl.id = field.id;
-        inputEl.className = 'field-input';
-        if (field.required) inputEl.required = true;
-        if (field.step) inputEl.setAttribute('step', field.step);
-        
-        if (field.placeholder_key) {
-          inputEl.dataset.i18n = field.placeholder_key;
-          inputEl.placeholder = t(field.placeholder_key);
-        } else if (field.placeholder) {
-          inputEl.placeholder = field.placeholder;
-        }
-      }
 
-      fieldGroup.appendChild(label);
-      fieldGroup.appendChild(inputEl);
-      accContent.appendChild(fieldGroup);
-    });
+        panelsContainer.appendChild(tabPanel);
 
-    accBodyInner.appendChild(accContent);
+        tabBtn.addEventListener('click', () => {
+          tabsList.querySelectorAll('.tuning-tab-btn').forEach(btn => btn.classList.remove('active'));
+          panelsContainer.querySelectorAll('.tuning-tab-panel').forEach(panel => panel.classList.remove('active'));
+
+          tabBtn.classList.add('active');
+          tabPanel.classList.add('active');
+        });
+      });
+
+      btnLeft.addEventListener('click', () => {
+        tabsScroll.scrollBy({ left: -150, behavior: 'smooth' });
+      });
+      btnRight.addEventListener('click', () => {
+        tabsScroll.scrollBy({ left: 150, behavior: 'smooth' });
+      });
+
+      accBodyInner.appendChild(panelsContainer);
+    } else {
+      const accContent = document.createElement('div');
+      accContent.className = 'accordion-content';
+
+      section.fields.forEach(field => {
+        // Add optional group header (primarily for Tuning)
+        if (field.group_header_key) {
+          const gh = document.createElement('div');
+          gh.className = 'grid-span-full';
+          gh.dataset.i18n = field.group_header_key;
+          gh.textContent = t(field.group_header_key);
+          accContent.appendChild(gh);
+        }
+
+        const fieldGroup = document.createElement('div');
+        fieldGroup.className = 'field-group';
+
+        const label = document.createElement('label');
+        label.setAttribute('for', field.id);
+        label.className = 'field-label';
+        
+        if (field.is_gear) {
+          label.dataset.i18nN = 'car.fields.gearing_n';
+          label.dataset.i18nNVal = field.gear_num;
+          label.textContent = t('car.fields.gearing_n', { n: field.gear_num });
+        } else {
+          label.dataset.i18n = `car.fields.${field.id}`;
+          label.textContent = t(`car.fields.${field.id}`) + (field.required ? ' *' : '');
+        }
+
+        let inputEl;
+        if (field.type === 'select') {
+          inputEl = document.createElement('select');
+          inputEl.id = field.id;
+          inputEl.className = 'field-select';
+          if (field.required) inputEl.required = true;
+
+          if (field.id === 'class') {
+            const optAll = document.createElement('option');
+            optAll.value = '';
+            optAll.dataset.i18n = 'dashboard.filter_all';
+            optAll.textContent = t('dashboard.filter_all');
+            inputEl.appendChild(optAll);
+          }
+
+          field.options.forEach(opt => {
+            const optEl = document.createElement('option');
+            optEl.value = opt;
+            optEl.textContent = opt;
+            inputEl.appendChild(optEl);
+          });
+        } else if (field.type === 'textarea') {
+          inputEl = document.createElement('textarea');
+          inputEl.id = field.id;
+          inputEl.className = 'field-input';
+          inputEl.style.height = '80px';
+          inputEl.style.resize = 'vertical';
+          if (field.required) inputEl.required = true;
+          
+          if (field.placeholder_key) {
+            inputEl.dataset.i18n = field.placeholder_key;
+            inputEl.placeholder = t(field.placeholder_key);
+          } else if (field.placeholder) {
+            inputEl.placeholder = field.placeholder;
+          }
+        } else {
+          inputEl = document.createElement('input');
+          inputEl.type = field.type;
+          inputEl.id = field.id;
+          inputEl.className = 'field-input';
+          if (field.required) inputEl.required = true;
+          if (field.step) inputEl.setAttribute('step', field.step);
+          
+          if (field.placeholder_key) {
+            inputEl.dataset.i18n = field.placeholder_key;
+            inputEl.placeholder = t(field.placeholder_key);
+          } else if (field.placeholder) {
+            inputEl.placeholder = field.placeholder;
+          }
+        }
+
+        fieldGroup.appendChild(label);
+        fieldGroup.appendChild(inputEl);
+        accContent.appendChild(fieldGroup);
+      });
+
+      accBodyInner.appendChild(accContent);
+    }
+
     accBody.appendChild(accBodyInner);
     
     acc.appendChild(accHeader);

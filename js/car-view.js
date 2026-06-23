@@ -77,45 +77,158 @@ function renderViewHTML() {
     const accBody = document.createElement('div');
     accBody.className = 'accordion-body';
 
-    const accContent = document.createElement('div');
-    accContent.className = 'accordion-content';
+    if (section.id === 'tuning') {
+      const tabsWrapper = document.createElement('div');
+      tabsWrapper.className = 'tuning-tabs-wrapper';
 
-    section.fields.forEach(field => {
-      // Add optional group header (primarily for Tuning)
-      if (field.group_header_key) {
-        const gh = document.createElement('div');
-        gh.className = 'grid-span-full';
-        gh.dataset.i18n = field.group_header_key;
-        gh.textContent = t(field.group_header_key);
-        accContent.appendChild(gh);
-      }
+      const btnLeft = document.createElement('button');
+      btnLeft.type = 'button';
+      btnLeft.className = 'tuning-scroll-btn left-btn';
+      btnLeft.textContent = '◀';
 
-      const fieldGroup = document.createElement('div');
-      fieldGroup.className = 'field-group';
+      const tabsScroll = document.createElement('div');
+      tabsScroll.className = 'tuning-tabs-scroll';
 
-      const label = document.createElement('span');
-      label.className = 'field-label';
-      
-      if (field.is_gear) {
-        label.dataset.i18nN = 'car.fields.gearing_n';
-        label.dataset.i18nNVal = field.gear_num;
-        label.textContent = t('car.fields.gearing_n', { n: field.gear_num });
-      } else {
-        label.dataset.i18n = `car.fields.${field.id}`;
-        label.textContent = t(`car.fields.${field.id}`);
-      }
+      const tabsList = document.createElement('div');
+      tabsList.className = 'tuning-tabs-list';
 
-      const displayDiv = document.createElement('div');
-      displayDiv.id = `val-${field.id}`;
-      displayDiv.className = 'field-input-readonly';
-      displayDiv.textContent = '—';
+      const btnRight = document.createElement('button');
+      btnRight.type = 'button';
+      btnRight.className = 'tuning-scroll-btn right-btn';
+      btnRight.textContent = '▶';
 
-      fieldGroup.appendChild(label);
-      fieldGroup.appendChild(displayDiv);
-      accContent.appendChild(fieldGroup);
-    });
+      tabsScroll.appendChild(tabsList);
+      tabsWrapper.appendChild(btnLeft);
+      tabsWrapper.appendChild(tabsScroll);
+      tabsWrapper.appendChild(btnRight);
 
-    accBody.appendChild(accContent);
+      accBody.appendChild(tabsWrapper);
+
+      const tabsData = [];
+      let currentTab = null;
+
+      section.fields.forEach(field => {
+        if (field.group_header_key) {
+          currentTab = {
+            id: field.group_header_key,
+            title_key: field.group_header_key,
+            fields: []
+          };
+          tabsData.push(currentTab);
+        }
+        if (currentTab) {
+          currentTab.fields.push(field);
+        }
+      });
+
+      const panelsContainer = document.createElement('div');
+      panelsContainer.className = 'tuning-panels-container';
+
+      tabsData.forEach((tab, tIndex) => {
+        const tabBtn = document.createElement('button');
+        tabBtn.type = 'button';
+        tabBtn.className = 'tuning-tab-btn';
+        tabBtn.dataset.tabTarget = tab.id;
+        tabBtn.dataset.i18n = tab.title_key;
+        tabBtn.textContent = t(tab.title_key);
+        if (tIndex === 0) {
+          tabBtn.classList.add('active');
+        }
+        tabsList.appendChild(tabBtn);
+
+        const tabPanel = document.createElement('div');
+        tabPanel.className = 'accordion-content tuning-tab-panel';
+        tabPanel.dataset.tabId = tab.id;
+        if (tIndex === 0) {
+          tabPanel.classList.add('active');
+        }
+
+        tab.fields.forEach(field => {
+          const fieldGroup = document.createElement('div');
+          fieldGroup.className = 'field-group';
+
+          const label = document.createElement('span');
+          label.className = 'field-label';
+          
+          if (field.is_gear) {
+            label.dataset.i18nN = 'car.fields.gearing_n';
+            label.dataset.i18nNVal = field.gear_num;
+            label.textContent = t('car.fields.gearing_n', { n: field.gear_num });
+          } else {
+            label.dataset.i18n = `car.fields.${field.id}`;
+            label.textContent = t(`car.fields.${field.id}`);
+          }
+
+          const displayDiv = document.createElement('div');
+          displayDiv.id = `val-${field.id}`;
+          displayDiv.className = 'field-input-readonly';
+          displayDiv.textContent = '—';
+
+          fieldGroup.appendChild(label);
+          fieldGroup.appendChild(displayDiv);
+          tabPanel.appendChild(fieldGroup);
+        });
+
+        panelsContainer.appendChild(tabPanel);
+
+        tabBtn.addEventListener('click', () => {
+          tabsList.querySelectorAll('.tuning-tab-btn').forEach(btn => btn.classList.remove('active'));
+          panelsContainer.querySelectorAll('.tuning-tab-panel').forEach(panel => panel.classList.remove('active'));
+
+          tabBtn.classList.add('active');
+          tabPanel.classList.add('active');
+        });
+      });
+
+      btnLeft.addEventListener('click', () => {
+        tabsScroll.scrollBy({ left: -150, behavior: 'smooth' });
+      });
+      btnRight.addEventListener('click', () => {
+        tabsScroll.scrollBy({ left: 150, behavior: 'smooth' });
+      });
+
+      accBody.appendChild(panelsContainer);
+    } else {
+      const accContent = document.createElement('div');
+      accContent.className = 'accordion-content';
+
+      section.fields.forEach(field => {
+        // Add optional group header (primarily for Tuning)
+        if (field.group_header_key) {
+          const gh = document.createElement('div');
+          gh.className = 'grid-span-full';
+          gh.dataset.i18n = field.group_header_key;
+          gh.textContent = t(field.group_header_key);
+          accContent.appendChild(gh);
+        }
+
+        const fieldGroup = document.createElement('div');
+        fieldGroup.className = 'field-group';
+
+        const label = document.createElement('span');
+        label.className = 'field-label';
+        
+        if (field.is_gear) {
+          label.dataset.i18nN = 'car.fields.gearing_n';
+          label.dataset.i18nNVal = field.gear_num;
+          label.textContent = t('car.fields.gearing_n', { n: field.gear_num });
+        } else {
+          label.dataset.i18n = `car.fields.${field.id}`;
+          label.textContent = t(`car.fields.${field.id}`);
+        }
+
+        const displayDiv = document.createElement('div');
+        displayDiv.id = `val-${field.id}`;
+        displayDiv.className = 'field-input-readonly';
+        displayDiv.textContent = '—';
+
+        fieldGroup.appendChild(label);
+        fieldGroup.appendChild(displayDiv);
+        accContent.appendChild(fieldGroup);
+      });
+
+      accBody.appendChild(accContent);
+    }
     acc.appendChild(accHeader);
     acc.appendChild(accBody);
 
