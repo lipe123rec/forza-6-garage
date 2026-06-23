@@ -821,10 +821,16 @@ function injectLocalUnitSelectors() {
 /**
  * Align all input fields and unit selects with the selected system preset
  */
-function handleGlobalUnitPresetChange(preset) {
+async function handleGlobalUnitPresetChange(preset) {
   setUnitSystem(preset);
   if (currentUser) {
     savePrefsToProfile(currentUser.id);
+  }
+  if (preset === 'custom') {
+    const drawerMenu = document.getElementById('drawerMenu');
+    if (drawerMenu) drawerMenu.classList.remove('open');
+    const { openProfileModal } = await import('./profile.js');
+    await openProfileModal();
   }
 
   // For each unit-enabled field, convert active value to the new preferred unit

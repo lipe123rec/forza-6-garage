@@ -322,66 +322,24 @@ export async function initProfileModal() {
     });
   }
 
-  // Add click hander to Gamertag Header (add styles to look like clickable link)
-  elGamertagHeader.style.cursor = 'pointer';
-  //elGamertagHeader.style.textDecoration = 'underline';
-  elGamertagHeader.title = t('profile.title');
+  // Add click handler to Gamertag Header and Link
+  const openAction = async (e) => {
+    if (e) e.preventDefault();
+    const drawerMenu = document.getElementById('drawerMenu');
+    if (drawerMenu) drawerMenu.classList.remove('open');
+    await openProfileModal();
+  };
 
-  elGamertagHeader.addEventListener('click', async () => {
-    elStatus.textContent = '';
-    elStatus.className = 'profile-status';
-    elModal.classList.add('open');
+  if (elGamertagHeader) {
+    elGamertagHeader.style.cursor = 'pointer';
+    elGamertagHeader.title = t('profile.title');
+    elGamertagHeader.addEventListener('click', openAction);
+  }
 
-    // Load active profile data
-    try {
-      elStatus.textContent = t('common.loading');
-      elStatus.className = 'profile-status info';
-
-      const { data: profile, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', currentUser.id)
-        .single();
-
-      if (error) throw error;
-
-      elGamertag.value = profile.gamertag;
-      elUsername.value = profile.username || '';
-      elLang.value = profile.preferred_language || getLang();
-      
-      const activeSystem = profile.preferred_unit_system || getUnitSystem();
-      elUnit.value = activeSystem;
-      
-      if (activeSystem === 'custom') {
-        elCustomSection.style.display = 'flex';
-      } else {
-        elCustomSection.style.display = 'none';
-      }
-
-      // Populate custom unit selects
-      const uPrefs = profile.unit_preferences && Object.keys(profile.unit_preferences).length > 0
-        ? profile.unit_preferences
-        : (SYSTEM_PRESETS[activeSystem] || SYSTEM_PRESETS['mixed']);
-
-      elPrefPower.value = uPrefs.power || 'hp';
-      elPrefTorque.value = uPrefs.torque || 'lb-ft';
-      elPrefWeight.value = uPrefs.weight || 'kg';
-      elPrefPressure.value = uPrefs.pressure || 'psi';
-      elPrefSpring.value = uPrefs.spring || 'lb/in';
-      elPrefHeight.value = uPrefs.height || 'in';
-      elPrefForce.value = uPrefs.force || 'lb_df';
-
-      elStatus.textContent = '';
-      elStatus.className = 'profile-status';
-      
-      // Update modal translations
-      applyTranslations();
-    } catch (err) {
-      console.error('Error fetching profile:', err);
-      elStatus.textContent = t('profile.messages.save_error') + err.message;
-      elStatus.className = 'profile-status error';
-    }
-  });
+  const elLinkEditProfile = document.getElementById('linkEditProfile');
+  if (elLinkEditProfile) {
+    elLinkEditProfile.addEventListener('click', openAction);
+  }
 
   // Cancel click
   if (elBtnCancel) {
@@ -475,5 +433,82 @@ export async function initProfileModal() {
         elStatus.className = 'profile-status error';
       }
     };
+  }
+}
+
+/**
+ * Loads profile data and opens the profile settings modal
+ */
+export async function openProfileModal() {
+  if (!currentUser) currentUser = await getCurrentUser();
+  if (!currentUser) return;
+
+  const elModal = document.getElementById('profileModal');
+  if (!elModal) return;
+  const elStatus = document.getElementById('profileStatus');
+  const elGamertag = document.getElementById('profileGamertag');
+  const elUsername = document.getElementById('profileUsername');
+  const elLang = document.getElementById('profileLang');
+  const elUnit = document.getElementById('profileUnit');
+  const elCustomSection = document.getElementById('profileCustomUnits');
+
+  const elPrefPower = document.getElementById('prefPower');
+  const elPrefTorque = document.getElementById('prefTorque');
+  const elPrefWeight = document.getElementById('prefWeight');
+  const elPrefPressure = document.getElementById('prefPressure');
+  const elPrefSpring = document.getElementById('prefSpring');
+  const elPrefHeight = document.getElementById('prefHeight');
+  const elPrefForce = document.getElementById('prefForce');
+
+  elStatus.textContent = '';
+  elStatus.className = 'profile-status';
+  elModal.classList.add('open');
+
+  try {
+    elStatus.textContent = t('common.loading');
+    elStatus.className = 'profile-status info';
+
+    const { data: profile, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', currentUser.id)
+      .single();
+
+    if (error) throw error;
+
+    elGamertag.value = profile.gamertag;
+    elUsername.value = profile.username || '';
+    elLang.value = profile.preferred_language || getLang();
+    
+    const activeSystem = profile.preferred_unit_system || getUnitSystem();
+    elUnit.value = activeSystem;
+    
+    if (activeSystem === 'custom') {
+      elCustomSection.style.display = 'flex';
+    } else {
+      elCustomSection.style.display = 'none';
+    }
+
+    // Populate custom unit selects
+    const uPrefs = profile.unit_preferences && Object.keys(profile.unit_preferences).length > 0
+      ? profile.unit_preferences
+      : (SYSTEM_PRESETS[activeSystem] || SYSTEM_PRESETS['mixed']);
+
+    elPrefPower.value = uPrefs.power || 'hp';
+    elPrefTorque.value = uPrefs.torque || 'lb-ft';
+    elPrefWeight.value = uPrefs.weight || 'kg';
+    elPrefPressure.value = uPrefs.pressure || 'psi';
+    elPrefSpring.value = uPrefs.spring || 'lb/in';
+    elPrefHeight.value = uPrefs.height || 'in';
+    elPrefForce.value = uPrefs.force || 'lb_df';
+
+    elStatus.textContent = '';
+    elStatus.className = 'profile-status';
+    
+    applyTranslations();
+  } catch (err) {
+    console.error('Error fetching profile:', err);
+    elStatus.textContent = t('profile.messages.save_error') + err.message;
+    elStatus.className = 'profile-status error';
   }
 }

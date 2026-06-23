@@ -64,10 +64,17 @@ async function init() {
   // Initialize header unit preset selector
   if (elUnitSystem) {
     elUnitSystem.value = getUnitSystem();
-    elUnitSystem.addEventListener('change', (e) => {
-      setUnitSystem(e.target.value);
+    elUnitSystem.addEventListener('change', async (e) => {
+      const val = e.target.value;
+      setUnitSystem(val);
       if (currentUser) {
         savePrefsToProfile(currentUser.id);
+      }
+      if (val === 'custom') {
+        const drawerMenu = document.getElementById('drawerMenu');
+        if (drawerMenu) drawerMenu.classList.remove('open');
+        const { openProfileModal } = await import('./profile.js');
+        await openProfileModal();
       }
     });
   }
