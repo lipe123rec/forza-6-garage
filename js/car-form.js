@@ -49,7 +49,34 @@ function renderFormHTML() {
   if (!elAccordionContainer) return;
   elAccordionContainer.innerHTML = '';
 
-  CAR_FIELDS.sections.forEach((section, sIndex) => {
+  const sectionsToRender = [];
+
+  // 1. Details section (normal accordion)
+  const detailsSec = CAR_FIELDS.sections.find(s => s.id === 'details');
+  if (detailsSec) sectionsToRender.push(detailsSec);
+
+  // 2. Upgrades virtual section combining several sub-sections
+  const upgradeSubSectionsIds = ['conversion', 'engine', 'platform', 'drivetrain', 'tires', 'aero', 'motor_battery'];
+  const upgradeSubSections = [];
+  upgradeSubSectionsIds.forEach(subId => {
+    const subSec = CAR_FIELDS.sections.find(s => s.id === subId);
+    if (subSec) upgradeSubSections.push(subSec);
+  });
+
+  if (upgradeSubSections.length > 0) {
+    sectionsToRender.push({
+      id: 'upgrades',
+      title_key: 'car.upgrades',
+      isVirtualUpgrades: true,
+      subSections: upgradeSubSections
+    });
+  }
+
+  // 3. Tuning section (custom tabs)
+  const tuningSec = CAR_FIELDS.sections.find(s => s.id === 'tuning');
+  if (tuningSec) sectionsToRender.push(tuningSec);
+
+  sectionsToRender.forEach((section, sIndex) => {
     const acc = document.createElement('div');
     acc.className = 'accordion';
     // Open the first section by default
@@ -81,11 +108,135 @@ function renderFormHTML() {
     const accBodyInner = document.createElement('div');
     accBodyInner.className = 'accordion-body-inner';
 
-    const accContent = document.createElement('div');
-    accContent.className = 'accordion-content';
-
     // Populate Fields
-    if (section.id === 'tuning') {
+    if (section.isVirtualUpgrades) {
+      const tabsWrapper = document.createElement('div');
+      tabsWrapper.className = 'tuning-tabs-wrapper';
+
+      const btnLeft = document.createElement('button');
+      btnLeft.type = 'button';
+      btnLeft.className = 'tuning-scroll-btn left-btn';
+      btnLeft.textContent = '◀';
+
+      const tabsScroll = document.createElement('div');
+      tabsScroll.className = 'tuning-tabs-scroll';
+
+      const tabsList = document.createElement('div');
+      tabsList.className = 'tuning-tabs-list';
+
+      const btnRight = document.createElement('button');
+      btnRight.type = 'button';
+      btnRight.className = 'tuning-scroll-btn right-btn';
+      btnRight.textContent = '▶';
+
+      tabsScroll.appendChild(tabsList);
+      tabsWrapper.appendChild(btnLeft);
+      tabsWrapper.appendChild(tabsScroll);
+      tabsWrapper.appendChild(btnRight);
+
+      accBodyInner.appendChild(tabsWrapper);
+
+      const panelsContainer = document.createElement('div');
+      panelsContainer.className = 'tuning-panels-container';
+
+      section.subSections.forEach((subSec, tIndex) => {
+        const tabBtn = document.createElement('button');
+        tabBtn.type = 'button';
+        tabBtn.className = 'tuning-tab-btn';
+        tabBtn.dataset.tabTarget = subSec.id;
+        tabBtn.dataset.i18n = subSec.title_key;
+        tabBtn.textContent = t(subSec.title_key);
+        if (tIndex === 0) {
+          tabBtn.classList.add('active');
+        }
+        tabsList.appendChild(tabBtn);
+
+        const tabPanel = document.createElement('div');
+        tabPanel.className = 'accordion-content tuning-tab-panel';
+        tabPanel.dataset.tabId = subSec.id;
+        if (tIndex === 0) {
+          tabPanel.classList.add('active');
+        }
+
+        subSec.fields.forEach(field => {
+          const fieldGroup = document.createElement('div');
+          fieldGroup.className = 'field-group';
+
+          const label = document.createElement('label');
+          label.setAttribute('for', field.id);
+          label.className = 'field-label';
+          
+          label.dataset.i18n = `car.fields.${field.id}`;
+          label.textContent = t(`car.fields.${field.id}`) + (field.required ? ' *' : '');
+
+          let inputEl;
+          if (field.type === 'select') {
+            inputEl = document.createElement('select');
+            inputEl.id = field.id;
+            inputEl.className = 'field-select';
+            if (field.required) inputEl.required = true;
+
+            field.options.forEach(opt => {
+              const optEl = document.createElement('option');
+              optEl.value = opt;
+              optEl.textContent = opt;
+              inputEl.appendChild(optEl);
+            });
+          } else if (field.type === 'textarea') {
+            inputEl = document.createElement('textarea');
+            inputEl.id = field.id;
+            inputEl.className = 'field-input';
+            inputEl.style.height = '80px';
+            inputEl.style.resize = 'vertical';
+            if (field.required) inputEl.required = true;
+            
+            if (field.placeholder_key) {
+              inputEl.dataset.i18n = field.placeholder_key;
+              inputEl.placeholder = t(field.placeholder_key);
+            } else if (field.placeholder) {
+              inputEl.placeholder = field.placeholder;
+            }
+          } else {
+            inputEl = document.createElement('input');
+            inputEl.type = field.type;
+            inputEl.id = field.id;
+            inputEl.className = 'field-input';
+            if (field.required) inputEl.required = true;
+            if (field.step) inputEl.setAttribute('step', field.step);
+            
+            if (field.placeholder_key) {
+              inputEl.dataset.i18n = field.placeholder_key;
+              inputEl.placeholder = t(field.placeholder_key);
+            } else if (field.placeholder) {
+              inputEl.placeholder = field.placeholder;
+            }
+          }
+
+          fieldGroup.appendChild(label);
+          fieldGroup.appendChild(inputEl);
+          tabPanel.appendChild(fieldGroup);
+        });
+
+        panelsContainer.appendChild(tabPanel);
+
+        tabBtn.addEventListener('click', () => {
+          tabsList.querySelectorAll('.tuning-tab-btn').forEach(btn => btn.classList.remove('active'));
+          panelsContainer.querySelectorAll('.tuning-tab-panel').forEach(panel => panel.classList.remove('active'));
+
+          tabBtn.classList.add('active');
+          tabPanel.classList.add('active');
+        });
+      });
+
+      btnLeft.addEventListener('click', () => {
+        tabsScroll.scrollBy({ left: -150, behavior: 'smooth' });
+      });
+      btnRight.addEventListener('click', () => {
+        tabsScroll.scrollBy({ left: 150, behavior: 'smooth' });
+      });
+
+      accBodyInner.appendChild(panelsContainer);
+    } else if (section.id === 'tuning') {
       const tabsWrapper = document.createElement('div');
       tabsWrapper.className = 'tuning-tabs-wrapper';
 

@@ -39,6 +39,7 @@ export default {
   },
   car: {
     details: 'Details',
+    upgrades: 'Upgrades',
     engine: 'Engine',
     platform: 'Platform and Handling',
     drivetrain: 'Drivetrain',
