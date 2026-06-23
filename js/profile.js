@@ -26,6 +26,8 @@ function injectProfileStyles() {
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
+      padding: 16px;
+      box-sizing: border-box;
     }
     .profile-modal-overlay.open {
       opacity: 1;
@@ -37,11 +39,21 @@ function injectProfileStyles() {
       border-radius: 4px;
       width: 100%;
       max-width: 440px;
+      max-height: 90vh;
+      overflow-y: auto;
+      overscroll-behavior: contain;
       padding: 32px;
       position: relative;
       box-shadow: 0 20px 40px rgba(0,0,0,0.5);
       transform: translateY(-20px);
       transition: transform 0.3s ease;
+      box-sizing: border-box;
+    }
+    @media (max-width: 480px) {
+      .profile-modal {
+        padding: 20px;
+        max-height: 95vh;
+      }
     }
     .profile-modal-overlay.open .profile-modal {
       transform: translateY(0);
