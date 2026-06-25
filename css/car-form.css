@@ -276,10 +276,12 @@
 
 .tuning-tabs-scroll {
   flex-grow: 1;
+  min-width: 0;
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch; /* Momentum scrolling para iOS */
 }
 
 .tuning-tabs-scroll::-webkit-scrollbar {
