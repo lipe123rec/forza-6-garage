@@ -371,6 +371,32 @@
 
 /* Mobile Responsive Adjustments */
 @media (max-width: 768px) {
+  .form-title-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .form-badge-area {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .form-badge-area .badge {
+    align-self: flex-start;
+  }
+
+  .form-badge-area #btnDuplicate,
+  .form-badge-area .btn,
+  .form-badge-area .btn-link {
+    display: block !important;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
   .tuning-scroll-btn {
     padding: 0 10px;
     font-size: 0.9rem;
