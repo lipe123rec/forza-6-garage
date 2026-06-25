@@ -272,10 +272,10 @@ function renderFormHTML() {
       });
 
       btnLeft.addEventListener('click', () => {
-        tabsScroll.scrollBy({ left: -150, behavior: 'smooth' });
+        tabsScroll.scrollLeft -= 150;
       });
       btnRight.addEventListener('click', () => {
-        tabsScroll.scrollBy({ left: 150, behavior: 'smooth' });
+        tabsScroll.scrollLeft += 150;
       });
 
       accBodyInner.appendChild(panelsContainer);
@@ -422,10 +422,10 @@ function renderFormHTML() {
       });
 
       btnLeft.addEventListener('click', () => {
-        tabsScroll.scrollBy({ left: -150, behavior: 'smooth' });
+        tabsScroll.scrollLeft -= 150;
       });
       btnRight.addEventListener('click', () => {
-        tabsScroll.scrollBy({ left: 150, behavior: 'smooth' });
+        tabsScroll.scrollLeft += 150;
       });
 
       accBodyInner.appendChild(panelsContainer);

@@ -276,6 +276,7 @@
 
 .tuning-tabs-scroll {
   flex-grow: 1;
+  width: 0; /* Correção de flexbox scroll horizontal no Safari iOS */
   min-width: 0;
   display: flex;
   overflow-x: auto;
