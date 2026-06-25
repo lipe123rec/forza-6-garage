@@ -139,6 +139,9 @@ function renderViewHTML() {
     const accBody = document.createElement('div');
     accBody.className = 'accordion-body';
 
+    const accBodyInner = document.createElement('div');
+    accBodyInner.className = 'accordion-body-inner';
+
     if (section.isVirtualUpgrades) {
       const tabsWrapper = document.createElement('div');
       tabsWrapper.className = 'tuning-tabs-wrapper';
@@ -164,7 +167,7 @@ function renderViewHTML() {
       tabsWrapper.appendChild(tabsScroll);
       tabsWrapper.appendChild(btnRight);
 
-      accBody.appendChild(tabsWrapper);
+      accBodyInner.appendChild(tabsWrapper);
 
       const panelsContainer = document.createElement('div');
       panelsContainer.className = 'tuning-panels-container';
@@ -226,7 +229,7 @@ function renderViewHTML() {
         tabsScroll.scrollBy({ left: 150, behavior: 'smooth' });
       });
 
-      accBody.appendChild(panelsContainer);
+      accBodyInner.appendChild(panelsContainer);
     } else if (section.id === 'tuning') {
       const tabsWrapper = document.createElement('div');
       tabsWrapper.className = 'tuning-tabs-wrapper';
@@ -252,7 +255,7 @@ function renderViewHTML() {
       tabsWrapper.appendChild(tabsScroll);
       tabsWrapper.appendChild(btnRight);
 
-      accBody.appendChild(tabsWrapper);
+      accBodyInner.appendChild(tabsWrapper);
 
       const tabsData = [];
       let currentTab = null;
@@ -337,7 +340,7 @@ function renderViewHTML() {
         tabsScroll.scrollBy({ left: 150, behavior: 'smooth' });
       });
 
-      accBody.appendChild(panelsContainer);
+      accBodyInner.appendChild(panelsContainer);
     } else if (section.id === 'details') {
       const detailsLayout = document.createElement('div');
       detailsLayout.className = 'details-layout';
@@ -403,7 +406,7 @@ function renderViewHTML() {
       });
 
       detailsLayout.appendChild(accContent);
-      accBody.appendChild(detailsLayout);
+      accBodyInner.appendChild(detailsLayout);
 
       elCarImageContainer = imgContainer;
       elCarImage = imgEl;
@@ -447,8 +450,9 @@ function renderViewHTML() {
         accContent.appendChild(fieldGroup);
       });
 
-      accBody.appendChild(accContent);
+      accBodyInner.appendChild(accContent);
     }
+    accBody.appendChild(accBodyInner);
     acc.appendChild(accHeader);
     acc.appendChild(accBody);
 
