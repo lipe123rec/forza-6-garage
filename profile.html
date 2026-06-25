@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="profile.title">Forza Garage — Configurações de Perfil</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-tag">FORZA</span>
+        <h1><a href="dashboard.html" style="color: inherit; text-decoration: none;">FH6 <em>Garage</em></a></h1>
+      </div>
+      <div class="header-user">
+        <button id="btnMenu" class="btn-menu" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Drawer Menu -->
+  <div id="drawerMenu" class="drawer-overlay">
+    <div class="drawer">
+      <div class="drawer-header">
+        <div class="logo">
+          <span class="logo-tag">FORZA</span>
+          <h2>FH6 <em>Garage</em></h2>
+        </div>
+        <button id="btnCloseMenu" class="btn-close-menu">&times;</button>
+      </div>
+      <div class="drawer-body">
+        <div class="drawer-gamertag-area">
+          <span id="userGamertag" class="drawer-gamertag">GAMERTAG: <span>...</span></span>
+          <a href="profile.html" id="linkEditProfile" class="drawer-edit-profile-link" style="display: block; font-size: 0.75rem; color: var(--cyan); margin-top: 6px; text-decoration: none; font-family: var(--cond); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;" data-i18n="profile.title">Configurações de Perfil</a>
+        </div>
+        
+        <div class="drawer-item">
+          <span class="drawer-label" data-i18n="units.toggle_label">Units:</span>
+          <div class="unit-toggle-drawer">
+            <select id="headerUnitSystem" class="unit-system-select">
+              <option value="mixed" data-i18n="units.mixed">Forza Style</option>
+              <option value="metric" data-i18n="units.metric">Metric</option>
+              <option value="imperial" data-i18n="units.imperial">Imperial</option>
+              <option value="custom" data-i18n="units.custom">Custom</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="drawer-item">
+          <span class="drawer-label" data-i18n="common.language">Language:</span>
+          <div class="lang-toggle-drawer">
+            <div class="lang-toggle">
+              <button class="lang-btn" data-lang="en">EN</button>
+              <span style="color: var(--muted);">/</span>
+              <button class="lang-btn" data-lang="pt">PT</button>
+            </div>
+          </div>
+        </div>
+
+        <nav class="drawer-nav">
+          <a href="dashboard.html" class="drawer-nav-link" data-i18n="dashboard.title">Minha Garagem</a>
+          <a href="instructions.html" class="drawer-nav-link" data-i18n="instructions.title">Instruções</a>
+          <a href="admin.html" id="adminLink" class="drawer-nav-link" style="display: none;" data-i18n="admin.title">Painel Admin</a>
+        </nav>
+      </div>
+      
+      <div class="drawer-footer">
+        <button id="btnLogout" class="btn-clear logout-drawer-btn" data-i18n="auth.logout">Sair</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="profile-container">
+    <div class="profile-panel">
+      <h2 class="profile-section-title" data-i18n="profile.title">Configurações de Perfil</h2>
+      
+      <!-- Status feedback -->
+      <div id="profileStatus" class="status-text" style="margin-bottom: 20px;"></div>
+
+      <form id="profileForm" novalidate class="profile-form-grid">
+        
+        <!-- Gamertag (Read-Only) -->
+        <div class="field-group">
+          <label class="field-label">Gamertag</label>
+          <input type="text" id="profileGamertag" class="field-input" style="opacity: 0.5; cursor: not-allowed;" disabled>
+        </div>
+
+        <!-- Display Name -->
+        <div class="field-group">
+          <label for="profileUsername" class="field-label" data-i18n="profile.username_label">Display Name</label>
+          <input type="text" id="profileUsername" class="field-input" placeholder="Your name or nickname..." data-i18n="profile.username_placeholder" required>
+        </div>
+
+        <!-- Language -->
+        <div class="field-group">
+          <label for="profileLang" class="field-label" data-i18n="profile.lang_label">Preferred Language</label>
+          <select id="profileLang" class="field-select">
+            <option value="en">English</option>
+            <option value="pt">Português</option>
+          </select>
+        </div>
+
+        <!-- Unit System -->
+        <div class="field-group">
+          <label for="profileUnit" class="field-label" data-i18n="profile.unit_label">Unit System</label>
+          <select id="profileUnit" class="field-select">
+            <option value="mixed" data-i18n="units.mixed">Forza Style</option>
+            <option value="metric" data-i18n="units.metric">Metric</option>
+            <option value="imperial" data-i18n="units.imperial">Imperial</option>
+            <option value="custom" data-i18n="units.custom">Custom</option>
+          </select>
+
+          <!-- Custom Units Section -->
+          <div id="profileCustomUnits" class="custom-units-panel">
+            <h3 class="custom-units-panel-title" data-i18n="profile.custom_units_title">Custom Unit Preferences</h3>
+            <div class="custom-units-form-grid">
+              
+              <div class="custom-unit-field-group">
+                <label for="prefPower" class="field-label" data-i18n="units.power">Power</label>
+                <select id="prefPower" class="field-select">
+                  <option value="hp">hp</option>
+                  <option value="cv">cv</option>
+                  <option value="kW">kW</option>
+                </select>
+              </div>
+
+              <div class="custom-unit-field-group">
+                <label for="prefTorque" class="field-label" data-i18n="units.torque">Torque</label>
+                <select id="prefTorque" class="field-select">
+                  <option value="lb-ft">lb-ft</option>
+                  <option value="N·m">N·m</option>
+                </select>
+              </div>
+
+              <div class="custom-unit-field-group">
+                <label for="prefWeight" class="field-label" data-i18n="units.weight">Weight</label>
+                <select id="prefWeight" class="field-select">
+                  <option value="kg">kg</option>
+                  <option value="lb">lb</option>
+                </select>
+              </div>
+
+              <div class="custom-unit-field-group">
+                <label for="prefPressure" class="field-label" data-i18n="units.pressure">Tire Pressure</label>
+                <select id="prefPressure" class="field-select">
+                  <option value="psi">psi</option>
+                  <option value="bar">bar</option>
+                  <option value="kPa">kPa</option>
+                </select>
+              </div>
+
+              <div class="custom-unit-field-group">
+                <label for="prefSpring" class="field-label" data-i18n="units.spring">Springs</label>
+                <select id="prefSpring" class="field-select">
+                  <option value="lb/in">lb/in</option>
+                  <option value="N/mm">N/mm</option>
+                  <option value="kgf/mm">kgf/mm</option>
+                </select>
+              </div>
+
+              <div class="custom-unit-field-group">
+                <label for="prefHeight" class="field-label" data-i18n="units.height">Ride Height</label>
+                <select id="prefHeight" class="field-select">
+                  <option value="in">in</option>
+                  <option value="cm">cm</option>
+                </select>
+              </div>
+
+              <div class="custom-unit-field-group" style="grid-column: span 2;">
+                <label for="prefForce" class="field-label" data-i18n="units.force">Downforce</label>
+                <select id="prefForce" class="field-select">
+                  <option value="lb_df">lb</option>
+                  <option value="kg_df">kg</option>
+                  <option value="kgf_df">kgf</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Password (Optional) -->
+        <div class="field-group">
+          <label for="profilePassword" class="field-label" data-i18n="profile.new_password_label">Nova Senha (Opcional)</label>
+          <input type="password" id="profilePassword" class="field-input" placeholder="Preencha apenas para alterar..." data-i18n="profile.new_password_placeholder">
+        </div>
+
+        <!-- Form Actions -->
+        <div class="profile-actions">
+          <a href="dashboard.html" class="btn-clear" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" data-i18n="common.cancel">Voltar</a>
+          <button type="submit" id="btnSaveProfile" class="btn" data-i18n="common.save">Salvar</button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <span data-i18n="common.footer">FORZA HORIZON 6 GARAGE &copy; 2026. DESENVOLVIDO PARA PILOTOS.</span>
+    &nbsp;&bull;&nbsp;
+    <a href="instructions.html" data-i18n="instructions.title" style="color: var(--cyan); text-decoration: none;">Instruções</a>
+  </footer>
+
+  <script type="module" src="js/profile.js"></script>
+</body>
+</html>

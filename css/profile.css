@@ -1,0 +1,110 @@
+/* profile.css - Specific styling for the dedicated Profile settings page */
+
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile-panel {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-top: 2px solid var(--pink); /* Destaque rosa para as configurações do perfil */
+  padding: 30px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.profile-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(18px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.profile-section-title {
+  font-family: var(--cond);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pink);
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 0, 127, 0.15);
+  padding-bottom: 8px;
+}
+
+.profile-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* Custom units area inside the profile panel */
+.custom-units-panel {
+  border: 1px solid var(--border);
+  background: rgba(10, 12, 8, 0.4);
+  padding: 20px;
+  display: none; /* Controlled via JS */
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.custom-units-panel-title {
+  font-family: var(--cond);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--pink);
+  border-bottom: 1px solid rgba(255, 0, 127, 0.12);
+  padding-bottom: 6px;
+}
+
+.custom-units-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.custom-unit-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Media Queries for Profile Page */
+@media (max-width: 600px) {
+  .profile-panel {
+    padding: 20px 16px;
+  }
+  
+  .custom-units-form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .profile-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .profile-actions button,
+  .profile-actions a {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}

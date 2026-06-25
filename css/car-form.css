@@ -338,11 +338,20 @@
   align-items: center;
   justify-content: center;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .tuning-scroll-btn:hover {
   background: var(--green);
   color: var(--dark);
+}
+
+.field-group:has(textarea) {
+  grid-column: 1 / -1;
+}
+
+.field-with-unit input {
+  min-width: 0;
 }
 
 /* Tab Panels */
@@ -373,6 +382,7 @@
   .accordion-content {
     padding: 16px;
     gap: 12px;
+    grid-template-columns: 1fr;
   }
 }
 

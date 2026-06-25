@@ -563,6 +563,7 @@ main {
 
 .field-with-unit input {
   flex-grow: 1;
+  min-width: 0;
 }
 
 .field-with-unit select {
