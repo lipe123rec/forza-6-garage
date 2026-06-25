@@ -371,6 +371,11 @@
 
 /* Mobile Responsive Adjustments */
 @media (max-width: 768px) {
+  .form-header-area {
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+  }
+
   .form-title-row {
     flex-direction: column;
     align-items: stretch;

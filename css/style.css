@@ -210,6 +210,10 @@ h3 {
   min-height: 18px;
 }
 
+.status-text:empty {
+  display: none;
+}
+
 .status-text.success { color: var(--green); }
 .status-text.error   { color: var(--red); }
 
