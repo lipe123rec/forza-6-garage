@@ -880,7 +880,7 @@ function translateFormUI() {
 
   // Translate title and badge for loaded car
   if (carId && currentCarData) {
-    elFormTitle.textContent = `${currentCarData.make} ${currentCarData.car}`.toUpperCase();
+    elFormTitle.textContent = `${currentCarData.year} ${currentCarData.make} ${currentCarData.car}`.toUpperCase();
     elFormTitle.removeAttribute('data-i18n');
     
     if (currentCarData.cloned_from) {
@@ -945,7 +945,7 @@ async function loadCarData(id) {
     currentCarData = car;
 
     // Set Title
-    elFormTitle.textContent = `${car.make} ${car.car}`.toUpperCase();
+    elFormTitle.textContent = `${car.year} ${car.make} ${car.car}`.toUpperCase();
     elFormTitle.removeAttribute('data-i18n');
 
     // Configure Badges & Relationships

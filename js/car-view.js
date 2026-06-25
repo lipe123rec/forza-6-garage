@@ -679,7 +679,7 @@ function getFieldDisplayValue(car, name) {
 function renderAllFields() {
   if (!currentCarData) return;
 
-  elFormTitle.textContent = `${currentCarData.make} ${currentCarData.car}`.toUpperCase();
+  elFormTitle.textContent = `${currentCarData.year} ${currentCarData.make} ${currentCarData.car}`.toUpperCase();
   elFormTitle.removeAttribute('data-i18n');
 
   // Translate all dynamic section headers
