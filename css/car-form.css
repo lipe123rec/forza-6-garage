@@ -278,7 +278,6 @@
   flex-grow: 1;
   width: 0; /* Correção de flexbox scroll horizontal no Safari iOS */
   min-width: 0;
-  display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none; /* Firefox */
@@ -290,7 +289,7 @@
 }
 
 .tuning-tabs-list {
-  display: flex;
+  display: inline-flex;
   gap: 4px;
   padding: 0 4px;
 }
