@@ -102,6 +102,7 @@
 .accordion-body-inner {
   overflow: hidden;
   min-height: 0;
+  width: 100%;
 }
 
 .accordion.open .accordion-body {
