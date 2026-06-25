@@ -395,9 +395,8 @@
     align-self: flex-start;
   }
 
-  .form-badge-area #btnDuplicate,
-  .form-badge-area .btn,
-  .form-badge-area .btn-link {
+  .form-badge-area #btnDuplicate[style*="inline-block"],
+  .form-badge-area .btn-link[style*="inline-block"] {
     display: block !important;
     text-align: center;
     width: 100%;
